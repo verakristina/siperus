@@ -1,0 +1,482 @@
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+<div id="map" style="background:#eee; height:93%;"></div>
+<div id="data" style="display:none;">
+	<div class="row" style="margin:0px; margin-top:20px;">
+		<div class="col-md-12">
+			<div class="panel panel-default panel-warning">
+				<div class="panel-heading" style="color:white;">
+					Data Calon Kepala Daerah
+				</div>
+				<div class="panel-body">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="<?php echo e(asset('asset/js/jquery-3.0.0.min.js')); ?>"></script>
+<script>
+  var myLatLng;
+  var map;
+  var marker_caleg = [];
+  var marker_dpd = [];
+  var marker_dpc = [];
+  var marker_survey = [];
+  var marker_gubernur = [];
+  var marker_bupati = [];
+  var marker_walikota = [];
+  var input;
+  var searchBox;
+  var pos;
+  var geocoder;
+  var infowindowover;
+  var sttout;
+  <?php
+	echo 'var DPD = [';
+		foreach($dataDPD as $tmp)
+		{				
+				$latlng2 = HelperData::getLatLng($tmp->prov_nama.', Indonesia');
+				echo '["'.$tmp->prov_nama.'","'.RTRIM($tmp->nama).'","'.$tmp->no_telp.'","'.$tmp->email.'",'.$latlng2['lat'].','.$latlng2['lng'].'],';
+		}
+	echo '];';
+	echo 'var DPC = [';
+      foreach($dataDPC as $data)
+      {
+		if($data->dpc_kab_id != ''){
+			$lokasi = $data->kab_nama;					
+		} else {
+			$lokasi = $data->prov_nama;
+		}
+		$latlng3 = HelperData::getLatLng($data->kab_nama.','.$data->prov_nama.', Indonesia');
+        echo '["'.$data->kab_nama.','.$data->prov_nama.'","'.$data->nama.'","'.$data->no_telp.'","'.$data->email.'","'.$lokasi.'",'.$latlng3['lat'].','.$latlng3['lng'].'],';
+      }
+    echo '];';
+?>
+	function initAutocomplete() {   
+		map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: -1.6024216765509336, lng: 119.794921875},
+		zoom: 5,
+		styles: [
+				{
+				  featureType: 'all',
+				  stylers: [
+					{ saturation: -80 }
+				  ]
+				},{
+				  featureType: 'road.arterial',
+				  elementType: 'geometry',
+				  stylers: [
+					{ hue: '#00ffee' },
+					{ saturation: 50 }
+				  ]
+				},{
+				  featureType: 'poi.business',
+				  elementType: 'labels',
+				  stylers: [
+					{ visibility: 'off' }
+				  ]
+				}
+			  ],
+		mapTypeId: google.maps.MapTypeId.TERRAIN
+		});
+  
+        input = document.getElementById('pac-input');
+        searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+
+        searchBox.addListener('places_changed', function() {
+          var places = searchBox.getPlaces();
+
+          if (places.length == 0) {
+            return;
+          }
+
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(171, 171),
+              origin: new google.maps.Point(100, 100),
+              anchor: new google.maps.Point(117, 134),
+              scaledSize: new google.maps.Size(125, 125)
+            };
+
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          map.fitBounds(bounds);
+        });
+    	//Fatchur
+  
+		$(document).ready(function(){
+			for(var a=0; a < DPD.length; a++)
+			{
+				addMarkerDPD(DPD[a][0],"<?php echo e(asset('asset/icon/user-purple.png')); ?>",DPD[a][1],DPD[a][3],DPD[a][2],a,"DPD",DPD[a][4],DPD[a][5]);
+			} 
+			for(var b=0; b < DPC.length; b++)
+			{				
+				addMarkerDPC(DPC[b][0],"<?php echo e(asset('asset/icon/user-red.png')); ?>",DPC[b][1],DPC[b][3],DPC[b][2],b,DPC[b][4],"DPC",DPC[b][5],DPC[b][6]);
+			} 
+		});
+		
+		var legend = document.getElementById('legend');
+		map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
+		google.maps.event.addDomListener(window, "resize", function() {
+			var center = map.getCenter();
+			google.maps.event.trigger(map, "resize");
+			map.setCenter(center);
+		});
+
+	}
+	
+	// Add Marker Gubernur
+	function addMarkerGubernur(address, icon, name, email, telephone, i, name_lokation, type,wakil,types, dketua, dwakil, lats ,lngs)
+	{
+		if(types == 'Gubernur'){
+			var telp = '';
+			if( telephone != ''){
+				telp = telephone;
+			} else {
+				telp = "";
+			}
+		  
+		  var over = 
+		  '<div id="content">'+
+		  '</div>'+
+		  '<div id="bodyContent" style="font-weight: 300; line-height: 20px; font-size: 13px;">'+
+		  '<div class="top" style="border-bottom:2px solid #f39c12;">'+name_lokation+'</div>'+
+		  '<table style="font-weight: 300; line-height: 20px; font-size: 13px;">'+
+			'<tr>'+
+			'<td>Ketua</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+dketua+'</td>'+
+			'</tr>'+       
+			'<tr>'+
+			'<td>Wakil</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+dwakil+'</td>'+
+			'</tr>'+
+			'<tr>'+
+			'<td>Calon</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+types+'</td>'+
+			'</tr>'+
+		  '</table>'+
+		  '</div>'+
+		  '</div>'; 
+			  
+			infowindowover = new google.maps.InfoWindow();
+		  
+			var marker7 = new google.maps.Marker({
+				map: map,
+				icon : icon,
+				position: {lat:lats, lng:lngs}
+			});
+		  
+			google.maps.event.addListener(marker7, 'click', infoCallback(over, marker7));
+			marker_gubernur.push(marker7);
+		}
+	}
+	
+	// Add Marker Bupati
+	function addMarkerBupati(address, icon, name, email, telephone, i, name_lokation, type,wakil,types, dketua, dwakil, lats ,lngs)
+	{
+		if(types == 'Bupati'){
+			var telp = '';
+			if( telephone != ''){
+				telp = telephone;
+			} else {
+				telp = "";
+			}
+		  
+		  var over = 
+		  '<div id="content">'+
+		  '</div>'+
+		  '<div id="bodyContent" style="font-weight: 300; line-height: 20px; font-size: 13px;">'+
+		  '<div class="top" style="border-bottom:2px solid #f39c12;">'+name_lokation+'</div>'+
+		  '<table style="font-weight: 300; line-height: 20px; font-size: 13px;">'+
+			'<tr>'+
+			'<td>Ketua</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+dketua+'</td>'+
+			'</tr>'+       
+			'<tr>'+
+			'<td>Wakil</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+dwakil+'</td>'+
+			'</tr>'+
+			'<tr>'+
+			'<td>Calon</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+types+'</td>'+
+			'</tr>'+
+		  '</table>'+
+		  '</div>'+
+		  '</div>'; 
+			  
+			infowindowover = new google.maps.InfoWindow();
+		  
+			var marker6 = new google.maps.Marker({
+				map: map,
+				icon : icon,
+				position: {lat:lats, lng:lngs}
+			});
+		  
+			google.maps.event.addListener(marker6, 'click', infoCallback(over, marker6));
+			marker_bupati.push(marker6);
+		}
+	}
+	
+	// Add Marker Walikota
+	function addMarkerWalikota(address, icon, name, email, telephone, i, name_lokation, type,wakil,types, dketua, dwakil, lats ,lngs)
+	{
+		if(types == 'Walikota'){
+			var telp = '';
+			if( telephone != ''){
+				telp = telephone;
+			} else {
+				telp = "";
+			}
+		  
+		  var over = 
+		  '<div id="content">'+
+		  '</div>'+
+		  '<div id="bodyContent" style="font-weight: 300; line-height: 20px; font-size: 13px;">'+
+		  '<div class="top" style="border-bottom:2px solid #f39c12;">'+name_lokation+'</div>'+
+		  '<table style="font-weight: 300; line-height: 20px; font-size: 13px;">'+
+			'<tr>'+
+			'<td>Ketua</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+dketua+'</td>'+
+			'</tr>'+       
+			'<tr>'+
+			'<td>Wakil</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+dwakil+'</td>'+
+			'</tr>'+
+			'<tr>'+
+			'<td>Calon</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+types+'</td>'+
+			'</tr>'+
+		  '</table>'+
+		  '</div>'+
+		  '</div>'; 
+			  
+			infowindowover = new google.maps.InfoWindow();
+		  
+			var marker5 = new google.maps.Marker({
+				map: map,
+				icon : icon,
+				position: {lat:lats, lng:lngs}
+			});
+		  
+			google.maps.event.addListener(marker5, 'click', infoCallback(over, marker5));
+			marker_walikota.push(marker5);
+		}	
+	}
+	// Add Marker DPD
+	function addMarkerDPD(address, icon, name, email, telephone, i,type, lats ,lngs){
+		var telp = '';
+		if( telephone != ''){
+			telp = telephone;
+		} else {
+			telp = "";
+		}
+      
+		var over = 
+		'<div id="content">'+
+		'</div>'+
+		'<div id="bodyContent" style="font-weight: 300; line-height: 20px; font-size: 13px;">'+
+		'<div class="top" style="border-bottom:2px solid #f39c12;">'+address+'</div>'+
+		'<table style="font-weight: 300; line-height: 20px; font-size: 13px;">'+
+			'<tr>'+
+			'<td>Nama</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+name+'</td>'+
+			'</tr>'+
+			'<tr>'+
+			'<td>Email</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+email+'</td>'+
+			'</tr>'+
+			'<tr>'+
+			'<td>No Telp</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+telp+'</td>'+
+			'</tr>'+
+		'</table>'+
+		'</div>'+
+		'</div>'; 
+      
+		infowindowover = new google.maps.InfoWindow();
+		
+        var marker2 = new google.maps.Marker({
+			map: map,
+			icon : icon,
+			title : name,
+			position: {lat:lats, lng:lngs}
+		});
+		google.maps.event.addListener(marker2, 'click', infoCallback(over, marker2));
+		marker_dpd.push(marker2);
+	}	
+	
+	// Add Marker DPC
+	function addMarkerDPC(address, icon, name, email, telephone, i,lokasi, type, lats ,lngs){
+		var telp = '';
+		  if( telephone != ''){
+			telp = telephone;
+		  } else {
+			telp = "";
+		  }
+		  
+		  var over = 
+		  '<div id="content">'+
+		  '</div>'+
+		  '<div id="bodyContent" style="font-weight: 300; line-height: 20px; font-size: 13px;">'+
+		  '<div class="top" style="border-bottom:2px solid #f39c12;">'+lokasi+'</div>'+
+		  '<table style="font-weight: 300; line-height: 20px; font-size: 13px;">'+
+			'<tr>'+
+			'<td>Nama</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+name+'</td>'+
+			'</tr>'+
+			'<tr>'+
+			'<td>Email</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+email+'</td>'+
+			'</tr>'+
+			'<tr>'+
+			'<td>No Telp</td>'+
+			'<td  style="width:10px; text-align:center;">:</td>'+
+			'<td>'+telp+'</td>'+
+			'</tr>'+
+		  '</table>'+
+		  '</div>'+
+		  '</div>'; 
+      
+		infowindowover = new google.maps.InfoWindow();
+		
+        var marker3 = new google.maps.Marker({
+			map: map,
+			icon : icon,
+			title : name,
+			position: {lat:lats, lng:lngs}
+		});
+		google.maps.event.addListener(marker3, 'click', infoCallback(over, marker3));
+		marker_dpc.push(marker3);
+	}	
+	
+	function infoCallback(over, marker) {
+	  return function() {
+		infowindowover.close();
+		// update the content of the infowindow before opening it
+		infowindowover.setContent(over)
+		infowindowover.open(map, marker);
+
+	  };
+	}
+	function setDPC(map) {
+        for (var i3 = 0; i3 < marker_dpc.length; i3++) {
+          marker_dpc[i3].setMap(map);
+        }
+    }    
+    function setDPD(map) {
+    	for (var i2 = 0; i2 < marker_dpd.length; i2++) {
+          	marker_dpd[i2].setMap(map);
+        }	
+    }	
+	function setGub(map) {
+        for (var i5 = 0; i5 < marker_gubernur.length; i5++) {
+          marker_gubernur[i5].setMap(map);
+        }
+    }
+	function setBup(map) {
+        for (var i6 = 0; i6 < marker_bupati.length; i6++) {
+          marker_bupati[i6].setMap(map);
+        }
+    }
+	function setWal(map) {
+        for (var i7 = 0; i7 < marker_walikota.length; i7++) {
+          marker_walikota[i7].setMap(map);
+        }
+    }
+	
+    function showDPD(jenis) {
+    	setDPD(map);
+    	setDPC(null);
+		setGub(null);
+    	setBup(null);
+    	setWal(null);
+    	$('#response-filter').fadeOut(100);
+		addOptionActive(jenis);
+    }
+	
+	function showDPC(jenis) {
+    	setDPD(null);
+    	setDPC(map);
+		setGub(null);
+    	setBup(null);
+    	setWal(null);
+    	$('#response-filter').fadeOut(100);
+		addOptionActive(jenis);
+	}
+	
+    function showDPDDPC(jenis) {
+    	setDPD(map);
+    	setDPC(map);
+		setGub(null);
+    	setBup(null);
+    	setWal(null);
+    	$('#response-filter').fadeOut(100);
+		addOptionActive(jenis);
+    }
+	
+	function showSuara(jenis){
+    	setDPD(null);
+    	setDPC(null);
+		setGub(map);
+    	setBup(map);
+    	setWal(map);
+    	$('#response-filter').fadeOut(100);
+		addOptionActive(jenis);
+	}
+	
+	function showAgenda(jenis){
+    	setDPD(null);
+    	setDPC(null);
+		setGub(map);
+    	setBup(map);
+    	setWal(map);
+    	$('#response-filter').fadeOut(100);
+		addOptionActive(jenis);
+	}
+	
+    function showAwal() {
+    	setDPD(map);
+    	setDPC(map);
+		setGub(null);
+    	setBup(null);
+    	setWal(null);
+    	$('#response-filter').fadeOut(100);
+    }
+	
+	function addOptionActive(jenis){
+		$('li>a.optionActive').removeClass('optionActive');
+		$('#'+jenis).addClass('optionActive');
+	}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCS6a6xaKsl3lnKhR_0tB351qZinkfjyes&libraries=places&callback=initAutocomplete" async defer></script>

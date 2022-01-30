@@ -1,0 +1,172 @@
+<?php $__env->startSection('content'); ?>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/jquery-3.1.1.js ')); ?>"></script>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/AhmadApp.js ')); ?>"></script>
+	<?php $__env->startSection('title-page','Data Pengurus PIMCAB '); ?>
+
+
+	<?php $__env->startSection('modal_struk_tipe','PIMCAB'); ?>
+	<?php $__env->startSection('struk_tipe_menu','Data Pengurus'); ?>
+	<?php $__env->startSection('struk_tipe_sub_menu','PIMCAB'); ?>
+	<?php $__env->startSection('struk_tipe_box_header','List PIMCAB'); ?>
+
+	<?php $__env->startSection('sk_baru', $sk_baru); ?>
+
+	<?php $__env->startSection('modal_struk_input_tambahan'); ?>
+		<?php $__env->startSection('indo_combo_prov','initial'); ?>
+		<?php $__env->startSection('indo_combo_kab','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+
+	<?php $__env->startSection('content_filter_combo'); ?>
+		<?php $__env->startSection('indo_combo_fprov','initial'); ?>
+		<?php $__env->startSection('indo_combo_fkab','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_filter_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+
+	<?php $__env->startSection('content_action_tambah','tambah/dpc'); ?>
+	<?php $__env->startSection('content_action_edit','edit/dpc/'); ?>
+
+
+	<?php $__env->startSection('goto_kab'); ?>
+	location.href="<?php echo e(url()); ?>/data_pengurus/dpc/"+provId+"/"+kabId;
+	<?php $__env->stopSection(); ?>
+	<!-- @ section('usecanvas','block')
+	@ include ('main.input.section_chart_script') -->
+
+	<script type="text/javascript">
+	$(function(){
+		jQuery.ajax({
+			url:'<?php echo e(url()); ?>/data_ajx/get/bio_menjabat/pac',
+			success:function(res,sts,xhr){
+				var newData={
+		     		label:'Jumlah PAC',
+		     		data:JSON.parse(res),
+		     		backgroundColor: 'rgba(0,0,0,0.5)',
+		            borderColor:'rgba(0,0,0,1)',
+		            borderWidth: 1,
+		            hidden:false,
+		        }
+				pusdatinV3chart.data.datasets.push(newData)
+				pusdatinV3chart.update();
+			},
+
+		});
+	})
+	</script>
+
+
+	<?php if(count($data) != 0): ?>
+		<?php $__env->startSection('content_table_header'); ?>
+			<tr>
+			  <th>No</th>
+			  <th>Jabatan</th>
+			  <!-- <th>Provinsi</th>
+			  <th>Kabupaten</th> -->
+			  <th>Nama</th>
+			  <!-- <th>L/P</th> -->
+			  <th>No. SK</th>
+			  <th>No. KTA</th>
+			  <th>No. KTP</th>
+			  <th>No.Telp</th>
+			  <!-- <th>Email</th> -->
+			  <th>Aksi</th>
+			</tr>
+		<?php $__env->stopSection(); ?>
+
+		<?php $__env->startSection('content_table_body'); ?>
+			<?php /**/$no =1/**/ ?>
+			<?php /**/$bio_xxx_id='bio_pimcab_id'/**/ ?>
+			<?php /**/$type='dpc'/**/ ?>
+			  <?php foreach($data as $val): ?>
+			  <?php /**/
+
+				$obj='provId:'.$val->geo_prov_id.
+				',kabNm:`'.$val->geo_kab_nama.
+				'`,kabId:'.$val->geo_kab_id.
+				',noSk:`'.$val->no_sk2.
+				'`,turunSK:`'.$val->turun_sk.'`,
+				noKta:`'.$val->no_kta2.'`, noHP : `'.$val->no_hp.'`, email : `'.$val->email.'`,nama_anggota : `'.$val->nama_anggota.'`'
+
+				/**/ ?>
+				<?php if($a_type != ""): ?>
+		  	<?php $__env->startSection('a_type', $a_type); ?>
+		  <?php endif; ?>
+
+		  <?php if($a_prov != ""): ?>
+		  	<?php $__env->startSection('a_prov', $a_prov); ?>
+		  <?php endif; ?>
+
+		  <?php if($a_kab != ""): ?>
+		  	<?php $__env->startSection('a_kab', $a_kab); ?>
+		  <?php endif; ?>
+
+		  <?php if($a_kec != ""): ?>
+		  	<?php $__env->startSection('a_kec', $a_kec); ?>
+		  <?php endif; ?>
+
+		  <?php if($a_deskel != ""): ?>
+		  	<?php $__env->startSection('a_deskel', $a_deskel); ?>
+		  <?php endif; ?>
+
+		  <?php if($a_rw != ""): ?>
+		  	<?php $__env->startSection('a_rw', $a_rw); ?>
+		  <?php endif; ?>
+			  <?php echo $__env->make('main.input.section_generik_content', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+				<tr>
+					<td><?php echo e($no++); ?></td>
+					<td><?php echo e($val->nama_jabatan?:'-'); ?></td>
+					<!-- <td>{ { $val->geo_prov_nama?:'-' } }</td>
+					<td>{ { $val->geo_kab_nama?:'-' } }</td> -->
+					<td>
+						<?php if($val->id_anggota != 0): ?>
+						<?php echo e($val->nama?:'-'); ?>
+
+						<?php else: ?>
+						<?php echo e($val->nama_anggota); ?>
+
+						<?php endif; ?>
+					</td>
+					<!-- <td>{ { ($val->gender==1?'Laki-Laki':($val->gender==2?'Perempuan':'-')) } }</td> -->
+					<td><?php echo e($val->no_sk2?:'-'); ?></td>
+					<td><?php echo e($val->bio_pimcab_kta?str_replace('.', '', $val->no_kta2):'-'); ?></td>
+					<td><?php echo e($val->bio_nomer_identitas); ?></td>
+					<td><?php echo e($val->no_hp?:'-'); ?></td>
+					<!-- <td><?php echo e($val->email?:'-'); ?></td> -->
+					<?php echo $__env->yieldContent('table_action'); ?>
+			  </tr>
+			  <?php endforeach; ?>
+		<?php $__env->stopSection(); ?>
+	<?php else: ?>
+		<?php $__env->startSection('content_table_body'); ?>
+			<tr>
+				<td>Data Tidak Ada</td>
+			</tr>
+		<?php $__env->stopSection(); ?>
+		<?php $__env->startSection('content_table_header'); ?>
+			<tr>
+				<th>Data Tidak Ada</th>
+			</tr>
+		<?php $__env->stopSection(); ?>
+	<?php endif; ?>
+
+	<script src="<?php echo e(asset('asset/js/moment.js')); ?>"></script>
+	<?php $__env->startSection('content_action_edit_func'); ?>
+		$('#prov2').val(obj.provId)
+		$("#kab2").html('<option value="'+obj.kabId+'" selected>'+obj.kabNm+'</option>');
+		$("#no_sk").val(obj.noSk)
+		$("#no_kta").val(obj.noKta)
+		$("#no_ktp").val(obj.noKTP)
+		$("#no_hp").val(obj.noHP)
+		$("#email").val(obj.email)
+		$("#nama_anggota").val(obj.nama_anggota)
+		$("#date").val(moment(obj.turunSK).format('DD-MM-YYYY'))
+
+	<?php $__env->stopSection(); ?>
+	<?php echo $__env->make('main.input.section_content_struktur', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $__env->make('main.input.section_modal_struktur', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $__env->make('main.anggota.partai.include.modal_detail', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,338 @@
+<div class="content-wrapper min-height" style="min-height:1px;">
+	<section class="content-header">
+		<h1>
+			<?php echo $__env->yieldContent('menu'); ?>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<?php foreach($breadcrumb as $val): ?>
+				<li><?php echo e($val); ?></li>
+			<?php endforeach; ?>
+		</ol>
+	</section>
+	<section class="content">
+		<div class="page-ajax">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel">
+						<div class="box-header with-border">
+							<div class="row">
+								<div class="col-md-2 col-sm-3 col-xs-6">
+									<?php echo $__env->yieldContent('box-header'); ?>
+								</div>
+								<div class="<?php echo $__env->yieldContent('download-button','hide'); ?> col-md-2 col-sm-3 col-xs-6 pull-right">
+									<div class="btn-warning btn-block btn" onclick="actionDownload('report','all')"><i class="fa fa-print"></i> Download</div>
+								</div>
+							</div>
+						</div>				
+			  			<div class="box-body">
+							<div class="row">
+								<div class="col-md-12">
+									<?php echo $__env->yieldContent('content-filter'); ?>
+								</div>
+							</div>
+							<div class="row" id="canvasReport">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-12" id="canvasPie">
+											
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12" id="canvasKetua">
+											<div class="row form-group">
+												<div class="col-md-3">
+													<div class="canvas-picture-xs">
+														<img src="<?php echo e(asset('asset/img/blank_profil.png')); ?>" alt="" height="100%" width="100%"/>
+													</div>
+												</div>
+												<div class="col-md-9">
+													<h4 class="no-margin"><b><?php echo e($namaKetuaDPD); ?></b></h4>
+													<small>Ketua DPD <?php echo e(@$namaDaerah); ?></small> <br>
+													<small><?php echo e($SkepKet); ?></small>
+												</div>
+											</div>
+											<div class="row form-group">
+												<div class="col-md-3">
+													<div class="canvas-picture-xs">
+														<img src="<?php echo e(asset('asset/img/blank_profil.png')); ?>" alt="" height="100%" width="100%"/>
+													</div>
+												</div>
+												<div class="col-md-9">
+													<h4 class="no-margin"><b><?php echo e($namaSekDPD); ?></b></h4>
+													<small>Sekertaris DPD <?php echo e(@$namaDaerah); ?></small><br>
+													<small><?php echo e(@$SkepSek); ?></small>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-8">
+									<div class="row">
+										<div class="col-md-6 <?php echo $__env->yieldContent('canvas-kabupaten','initial'); ?>" id="canvasKabupaten"></div>
+										<div class="col-md-6 <?php echo $__env->yieldContent('canvas-kecamatan','initial'); ?>" id="canvasKecamatan"></div>
+										<div class="col-md-6 <?php echo $__env->yieldContent('canvas-kelurahan','initial'); ?>" id="canvasKelurahan"></div>
+										<div class="col-md-6 <?php echo $__env->yieldContent('canvas-rw','initial'); ?>" id="canvasRW"></div>
+										<div class="col-md-6 <?php echo $__env->yieldContent('canvas-rt','initial'); ?>" id="canvasRT"></div>
+										<div class="col-md-6 <?php echo $__env->yieldContent('canvas-dprdi','initial'); ?>" id="canvasDprdi"></div>
+										<div class="col-md-6 <?php echo $__env->yieldContent('canvas-dprdii','initial'); ?>" id="canvasDprdii"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script src="<?php echo e(asset('asset/plugins/mcustomscroll/jquery.mCustomScrollbar.concat.min.js')); ?>"></script>
+	<link rel="stylesheet" href="<?php echo e(asset('asset/css/mcustomscroll/jquery.mCustomScrollbar.min.css')); ?>">
+	<script src="<?php echo e(asset('asset/plugins/scrollbar/jquery.scrollbar.min.js')); ?>"></script>
+	<link rel="stylesheet" href="<?php echo e(asset('asset/css/scrollbar/jquery.scrollbar.css')); ?>">
+	<script type="text/javascript">
+	var provId, kabId, kecId, kelId, rwId;
+	var response, url;
+	
+	provId = $('#prov').val();
+	kabId = $('#kab').val();
+	kecId = $('#kec').val();
+	kelId = $('#kel').val();
+	rwId = $('#rw').val();
+	rtId = $('#rt').val();
+	DprdiId = $('#dprdi').val();
+	DprdiiId = $('#dprdii').val();
+	
+	$('document').ready(function(){
+		if(provId != ''){
+			if('<?php echo e($type); ?>' == 'dpd'){			
+				getGrafik('pie','#canvasPie','dpd','/'+provId);
+				/* getGrafik('ketua','#canvasKetua','/'+provId); */
+				getGrafik('kabupaten','#canvasKabupaten','dpd','/'+provId);
+				getGrafik('kecamatan','#canvasKecamatan','dpd','/'+provId);
+				getGrafik('kelurahan','#canvasKelurahan','dpd','/'+provId);
+				getGrafik('rw','#canvasRW','dpd','/'+provId);
+				getGrafik('rt','#canvasRT','dpd','/'+provId);
+			} else if('<?php echo e($type); ?>' == 'dpc'){	
+				hideElement('#canvasKabupaten');
+				getGrafik('pie','#canvasPie','dpc','/'+provId);
+				/* getGrafik('ketua','#canvasKetua','/'+provId); */
+				getGrafik('kecamatan','#canvasKecamatan','dpc','/'+provId);
+				getGrafik('kelurahan','#canvasKelurahan','dpc','/'+provId);
+				getGrafik('rw','#canvasRW','dpc','/'+provId);
+				getGrafik('rt','#canvasRT','dpc','/'+provId);
+				getGrafik('dprdi','#canvasDprdi','dpc','/'+provId);
+				getGrafik('dprdii','#canvasDprdii','dpc','/'+provId);
+			} else if('<?php echo e($type); ?>' == 'pac'){
+				hideElement('#canvasKabupaten');	
+				hideElement('#canvasKecamatan');
+				getGrafik('pie','#canvasPie','pac','/'+provId);
+				/* getGrafik('ketua','#canvasKetua','/'+provId); */
+				getGrafik('kelurahan','#canvasKelurahan','pac','/'+provId);
+				getGrafik('rw','#canvasRW','pac','/'+provId);
+				getGrafik('rt','#canvasRT','pac','/'+provId);
+			} else if('<?php echo e($type); ?>' == 'pr'){	
+				hideElement('#canvasKabupaten');	
+				hideElement('#canvasKecamatan');
+				hideElement('#canvasKelurahan');
+				getGrafik('pie','#canvasPie','pr','/'+provId);
+				/* getGrafik('ketua','#canvasKetua','/'+provId); */
+				getGrafik('rw','#canvasRW','pr','/'+provId);
+				getGrafik('rt','#canvasRT','pr','/'+provId);
+			} else if('<?php echo e($type); ?>' == 'par'){	
+				hideElement('#canvasKabupaten');	
+				hideElement('#canvasKecamatan');
+				hideElement('#canvasKelurahan');
+				hideElement('#canvasRW');
+				getGrafik('rt','#canvasRT','par','/'+provId);
+				getGrafik('pie','#canvasPie','par','/'+provId);		
+				/* getGrafik('ketua','#canvasKetua','/'+provId); */		
+			} else if('<?php echo e($type); ?>' == 'kpa'){	
+				hideElement('#canvasKabupaten');	
+				hideElement('#canvasKecamatan');
+				hideElement('#canvasKelurahan');
+				hideElement('#canvasRW');
+				getGrafik('pie','#canvasPie','kpa','/'+provId);		
+				/* getGrafik('ketua','#canvasKetua','/'+provId); */		
+			}
+		} else {
+			$('#canvasReport').hide();
+		}
+	});
+	
+	function getGrafik(jenis,response,type,addLink='',types){
+		if(jenis == 'pie'){
+			getGrafikPie(response,addLink,type);
+		} else if(jenis == 'ketua'){
+			getGrafikKetua(response,addLink,type);
+		} else if(jenis == 'kabupaten'){
+			getGrafikKabupaten(response,addLink,type);
+		} else if(jenis == 'kecamatan'){
+			getGrafikKecamatan(response,addLink,type);
+		} else if(jenis == 'kelurahan'){
+			getGrafikKelurahan(response,addLink,type);
+		} else if(jenis == 'rw'){
+			getGrafikRW(response,addLink,type);
+		} else if(jenis == 'rt'){
+			getGrafikRT(response,addLink,type);
+		} else if(jenis == 'dprdi'){
+			getGrafikDprdi(response,addLink,type);
+		} else if(jenis == 'dprdii'){
+			getGrafikDprdii(response,addLink,type);
+		}
+	}
+	
+	function getGrafikPie(response,addLink='',types){
+		$.ajax({
+			url		: '<?php echo e(url()); ?>/grafik/'+types+'/pie'+addLink,
+			type	: 'get',
+			data	: {jenis:'pie'},
+			dataType: 'html',
+			success:function(data){					
+				$(response).html(data);
+			}
+		});	
+	}
+	function getGrafikKetua(response,addLink='',types){
+		$.ajax({
+			url		: '<?php echo e(url()); ?>/grafik/'+types+'/ketua'+addLink,
+			type	: 'get',
+			data	: {jenis:'ketua'},
+			dataType: 'html',
+			success:function(data){					
+				$(response).html(data);
+			}
+		});
+	}
+	function getGrafikKabupaten(response,addLink='',types){
+		$.ajax({
+			url		: '<?php echo e(url()); ?>/grafik/'+types+'/kabupaten'+addLink,
+			type	: 'get',
+			data	: {jenis:'kabupaten'},
+			dataType: 'html',
+			success:function(data){					
+				$(response).html(data);
+			}
+		});
+	}
+	function getGrafikKecamatan(response,addLink='',types){
+		$.ajax({
+			url		: '<?php echo e(url()); ?>/grafik/'+types+'/kecamatan'+addLink,
+			type	: 'get',
+			data	: {jenis:'kecamatan'},
+			dataType: 'html',
+			success:function(data){					
+				$(response).html(data);
+			}
+		});
+	}
+	function getGrafikKelurahan(response,addLink='',types){
+		$.ajax({
+			url		: '<?php echo e(url()); ?>/grafik/'+types+'/kelurahan'+addLink,
+			type	: 'get',
+			data	: {jenis:'kelurahan'},
+			dataType: 'html',
+			success:function(data){					
+				$(response).html(data);
+			}
+		});
+	}
+	function getGrafikRW(response,addLink='',types){
+		$.ajax({
+			url		: '<?php echo e(url()); ?>/grafik/'+types+'/rw'+addLink,
+			type	: 'get',
+			data	: {jenis:'rw'},
+			dataType: 'html',
+			success:function(data){					
+				$(response).html(data);
+			}
+		});
+	}
+	function getGrafikRT(response,addLink='',types){
+		$.ajax({
+			url		: '<?php echo e(url()); ?>/grafik/'+types+'/rt'+addLink,
+			type	: 'get',
+			data	: {jenis:'rw'},
+			dataType: 'html',
+			success:function(data){					
+				$(response).html(data);
+			}
+		});
+	}
+	function getGrafikDprdi(response,addLink='',types){
+		$.ajax({
+			url		: '<?php echo e(url()); ?>/grafik/'+types+'/dprdi'+addLink,
+			type	: 'get',
+			data	: {jenis:'dprdi'},
+			dataType: 'html',
+			success:function(data){					
+				$(response).html(data);
+			}
+		});
+	}
+	function getGrafikDprdii(response,addLink='',types){
+		$.ajax({
+			url		: '<?php echo e(url()); ?>/grafik/'+types+'/dprdii'+addLink,
+			type	: 'get',
+			data	: {jenis:'dprdii'},
+			dataType: 'html',
+			success:function(data){					
+				$(response).html(data);
+			}
+		});
+	}
+	
+	$(function(){		
+		$('#prov').change(function(){
+			var provId = $(this).val();
+			<?php echo $__env->yieldContent('goto_prov'); ?>
+			changeKabupatenOptionKPU(null,'#kab',provId);
+
+		});
+
+		$('#kab').change(function(){
+			var provId = $('#prov').val();
+			var kabId = $(this).val();
+			<?php echo $__env->yieldContent('goto_kab'); ?>
+			changeKecamatanOptionKPU(null,'#kec',provId,kabId);
+
+		});
+		$('#kec').change(function(){
+			var provId = $('#prov').val();
+			var kabId = $('#kab').val();
+			var kecId = $(this).val();
+			<?php echo $__env->yieldContent('goto_kec'); ?>
+			changeKelurahanOptionKPU(null,'#kel',provId,kabId,kecId);
+
+		});
+		$('#kel').change(function(){
+			var provId = $('#prov').val();
+			var kabId = $('#kab').val();
+			var kecId = $('#kec').val();
+			var kelId = $(this).val();
+			<?php echo $__env->yieldContent('goto_kel'); ?>
+			changeRWOptionKPU(null,'#rw',provId,kabId,kecId,kelId);
+
+		});
+		$('#rw').change(function(){
+			var provId = $('#prov').val();
+			var kabId = $('#kab').val();
+			var kecId = $('#kec').val();
+			var kelId = $('#kel').val();
+			var rwId = $('#rw').val();
+			<?php echo $__env->yieldContent('goto_rw'); ?>
+
+			//changeRWOptionKPU('#rw',provId,kabId,kecId,kelId,rwId);
+		});
+		$('#rt').change(function(){
+			var provId = $('#prov').val();
+			var kabId = $('#kab').val();
+			var kecId = $('#kec').val();
+			var kelId = $('#kel').val();
+			var rwId = $('#rw').val();
+			var rtId = $('#rt').val();
+			<?php echo $__env->yieldContent('goto_rt'); ?>
+
+			//changeRWOptionKPU('#rw',provId,kabId,kecId,kelId,rwId);
+		});
+	});
+	</script>

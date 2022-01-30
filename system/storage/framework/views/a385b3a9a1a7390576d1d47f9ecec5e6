@@ -1,0 +1,136 @@
+<?php $__env->startSection('title-page','Dashboard'); ?>
+
+<?php $__env->startSection('main-sidebar'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+<div class="content-wrapper min-height" style="min-height:1px;">
+	<section class="content-header">
+	  <h1>
+		Dashboard
+		<small></small>
+	  </h1>
+	  <ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li class="active">Dashboard</li>
+	  </ol>
+	</section>
+
+	<section class="content">
+	  <div class="row" style="margin-bottom: 15px;">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+			<select class="form-control custom-field-litle" id="prov" name="prov" required>
+				<option>--- Provinsi ---</option>
+				<?php foreach($dataProvAll as $tmps): ?>									
+					<option value="<?php echo e($tmps->geo_prov_id); ?>" <?php echo e(($tmps->geo_prov_id == @$prov)?'selected':'non-selected'); ?>> <?php echo e($tmps->geo_prov_nama); ?> </option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+	  </div>
+	  <div class="row" style="margin-bottom: 15px;">
+		<div class="col-md-12">
+			<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+		</div>
+	  </div>
+	  <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-map-marker"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Kabupaten / Kota</span>
+              <span class="info-box-number"><?php echo e(number_format($dataKab,0, "," , ".")); ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-map-marker"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Kecamatan</span>
+              <span class="info-box-number"><?php echo e(number_format($dataKec,0, "." , ".")); ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-map-marker"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Kelurahan</span>
+              <span class="info-box-number"><?php echo e(number_format($dataKel,0, "." , ".")); ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col --> 
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-map-marker"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">RW</span>
+              <span class="info-box-number"><?php echo e(number_format($dataRW,0, "." , ".")); ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col --> 
+		
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Penduduk</span>
+              <span class="info-box-number"><?php echo e(number_format($dataTotalPendudukAll,0, "." , ".")); ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col --> 
+      </div>
+      <!-- /.row -->
+	</section>
+</div>
+<script src="<?php echo e(asset('asset/plugins/jQuery/jquery-2.2.3.min.js')); ?>"></script>
+
+<script>
+	$('#prov').change(function(){
+		var prov = $(this).val();
+		location.href="<?php echo url(); ?>/dashboard/"+prov;
+	});
+
+	$('document').ready(function(){
+		var prov = $('#prov').val();
+		if(prov != ''){
+			var url = '<?php echo e(asset("dashboard/get/data/grafik")); ?>/'+prov;
+		} else {
+			var url = '<?php echo e(asset("dashboard/get/data/grafik")); ?>';
+		}
+		$.ajax({
+			url     : url,
+			type    : 'get',
+			data    : {prov: prov},
+			dataType: 'html',
+			success : function(data) {
+				$('#container').html(data)
+			}
+		});
+	});
+</script>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

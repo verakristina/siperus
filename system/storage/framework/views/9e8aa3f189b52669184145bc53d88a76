@@ -1,0 +1,25 @@
+<?php $__env->startSection('content'); ?>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/jquery-3.1.1.js ')); ?>"></script>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/AhmadApp.js ')); ?>"></script>
+	<?php $__env->startSection('title-page','Report '.$type); ?>
+
+
+	<?php $__env->startSection('menu','Report<small>'.strtoupper($type).'</small>'); ?>
+	<?php $__env->startSection('box-header','Report '.strtoupper($type)); ?>
+
+	<?php $__env->startSection('content-filter'); ?> 
+		<?php $__env->startSection('indo_combo_fprov','initial'); ?>
+		<?php $__env->startSection('goto_prov'); ?>
+			location.href="<?php echo e(asset('report/'.$type)); ?>/"+provId;
+		<?php $__env->stopSection(); ?>
+		<?php echo $__env->make('main.report.include.content-filter', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+	
+	<?php $__env->startSection('content-body'); ?>
+		
+	<?php $__env->stopSection(); ?>
+	
+	<?php echo $__env->make('main.report.include.content-body', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

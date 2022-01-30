@@ -1,0 +1,104 @@
+<?php $__env->startSection('title-page','List User'); ?>
+
+<?php $__env->startSection('main-sidebar'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+<?php echo $__env->make('main.anggota.partai.include.modal_detail', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php echo $__env->make('main.user.modal-map', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="<?php echo e(asset('asset/plugins/daterangepicker/daterangepicker.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('asset/plugins/select2/select2.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('asset/plugins/datepicker/datepicker3.css')); ?>">
+<div class="content-wrapper min-height" style="min-height:1px;">
+	<section class="content-header">
+	  <h1>
+		Pendaftaran Anggota
+		<small>Data Anggota Partai</small>
+	  </h1>
+	  <ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li>Pendaftaran Anggota</li>
+		<li class="active">Data Anggota Partai</li>
+	  </ol>
+	</section>
+	
+	<section class="content">
+	  <div class="page-ajax"> 
+	  <div class="row">
+		<div class="col-md-12">
+		  <div class="panel">
+			<div class="box-header with-border">
+			  	<div class="col-md-2 col-sm-3 col-xs-6">
+					List User
+				</div>
+				<div class="col-md-2 col-sm-3 col-xs-6 pull-right">
+					<div class="<?php echo $__env->yieldContent('add-button','show'); ?> btn-block  btn-warning btn" onclick="goTo('<?php echo e(asset('anggota/partai/add')); ?>')"><i class="fa fa-plus"></i> Tambah</div>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<?php echo $__env->make('main.layout.filter-anggota', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			</div>
+				   <div class="response-cari">
+					  <!-- /.box-tools -->
+					  <?php $no=1; ?>
+					  <div class="box-body"> 
+						<table class="table table-striped table-hover">
+						  <thead>
+							<tr>
+							  <th>No</th>
+							  <th>Nama</th>
+							  <th>JK</th>
+							  <th>TTL</th>
+							  <th>No.Telp</th>
+							  <th>Email</th>
+							  <th>Alamat</th>
+							  <th style="min-width: 180px;">Aksi</th>
+							</tr>
+						  </thead>
+						  <tbody id="area-data">
+						  <?php foreach($dataBio as $tmp): ?>
+							<?php
+								$namaLengkap = array();
+								array_push($namaLengkap,ucwords(strtolower($tmp->bio_nama_depan)),ucwords(strtolower($tmp->bio_nama_tengah)),ucwords(strtolower($tmp->bio_nama_belakang)));
+							?>
+							  <tr>
+								<td><?php echo e($no++); ?></td>
+								<td><?php echo e(join(' ',$namaLengkap)); ?></td>
+								<td><?php echo e(($tmp->jk_alias != '')?$tmp->jk_alias:'-'); ?></td>
+								<td><?php echo e(($tmp->bio_tanggal_lahir != '')?date('d-m-Y',strtotime($tmp->bio_tanggal_lahir)):'-'); ?></td>
+								<td><?php echo e(($tmp->bio_handphone != '')?$tmp->bio_handphone:'-'); ?></td>
+								<td><?php echo e(($tmp->bio_email != '')?$tmp->bio_email:'-'); ?></td>
+								<td><?php echo e(($tmp->bio_alamat != '')?$tmp->bio_alamat:'-'); ?></td>
+								<td>
+								  <div onclick="detailUser('<?php echo e($tmp->id_bio); ?>')" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"><i class="fa fa-search"></i></div>								
+								  <div onclick="editUser('<?php echo e($tmp->id_bio); ?>')" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"><i class="fa fa-edit"></i></div>
+								  <a href="<?php echo e(asset('input/hapus/user_management/'.$tmp->id_bio)); ?>" onclick="return confirm('Apakah anda yakin ingin menhapus data ini?');" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+								  <div onclick="printUser('<?php echo e($tmp->id_bio); ?>')" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="fa fa-print"></i></div>
+								</td>
+							  </tr>
+						  <?php endforeach; ?>
+						  </tbody>
+						</table>
+						<?php echo $dataBio->render() ?>
+					  </div>
+				   </div>
+				  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</section>
+</div>
+
+<script>
+$("table").dataTable().destroy();
+function editUser(idUser){
+	window.location.href='<?php echo e(asset("anggota/partai/list")); ?>/'+idUser;
+}
+
+// function editUser(idUser){
+// 	window.location.href='<?php echo e(asset("hapus/user_management/")); ?>/'+idUser;
+// }
+</script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

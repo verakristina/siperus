@@ -1,0 +1,276 @@
+
+
+<?php $__env->startSection('title-page','List Statistik'); ?>
+
+<?php $__env->startSection('main-sidebar'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+<div class="modal primary moda-fade" id="tambahProvinsi" role="dialog" aria-labelledby="tambahProvinsiLabel" >
+	<div class="modal-dialog modal-md" role="document">
+		<form action="<?php echo e(asset('proses/statistik')); ?>" name="barangbuktiform" enctype="multipart/form-data" method="post">
+			<div class="modal-content">
+				<div class="modal-header modal-primary">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title modal-primary" id="myModalLabel">Tambah Statistik</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">Provinsi</label>
+							<div class="col-md-8">
+								<?php if(session('idProvinsi') != '' OR session('idProvinsi') == NULL && session('idRole') == 3): ?>
+									<?php foreach($dataProvinsi as $tmp): ?>
+										<?php echo e(($tmp->geo_prov_id == session('idProvinsi')?$tmp->geo_prov_nama:'')); ?>
+
+									<?php endforeach; ?>
+									<?php /**/ $statusProvinsi = 'hide' /**/ ?>
+								<?php else: ?>
+									<?php /**/ $statusProvinsi = 'show' /**/ ?>
+								<?php endif; ?>
+								<select name="provinsi" id="provinsis" class="<?php echo e($statusProvinsi); ?> form-control custom-field-litle"  >
+									<option selected disabled class="text-hide">--- Pilih Provinsi ---</option>
+									<?php foreach($dataProvinsi as $tmp): ?>
+										<option value="<?php echo e($tmp->geo_prov_id); ?>" <?php echo e(($tmp->geo_prov_id == session('idProvinsi') && session('idRole') == 3)?'selected':''); ?>><?php echo e($tmp->geo_prov_nama); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">DPC (jumlah/ada)</label>
+							<div class="col-md-4">
+								<input type="text" name="pengurus_pimcab" id="pengurus_pimcab" class="form-control" placeholder="Pengurus DPC">
+							</div>
+							<div class="col-md-4">
+								<input type="text" name="pengurus_pimcab_ada" id="pengurus_pimcab_ada" class="form-control" placeholder="Pengurus DPC">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">PAC (jumlah/ada)</label>
+							<div class="col-md-4">
+								<input type="text" name="pengurus_pac" id="pengurus_pac" class="form-control" placeholder="Pengurus PAC">
+							</div>
+							<div class="col-md-4">
+								<input type="text" name="pengurus_pac_ada" id="pengurus_pac_ada" class="form-control" placeholder="Pengurus PAC">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">Ranting (jumlah/ada)</label>
+							<div class="col-md-4">
+								<input type="text" name="pengurus_ranting" id="pengurus_ranting" class="form-control" placeholder="Pengurus Ranting Ada">
+							</div>
+							<div class="col-md-4">
+								<input type="text" name="pengurus_ranting_ada" id="pengurus_ranting_ada" class="form-control" placeholder="Pengurus Ranting Ada">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">Anak Ranting (jumlah/ada)</label>
+							<div class="col-md-4">
+								<input type="text" name="pengurus_anak_ranting" id="pengurus_anak_ranting" class="form-control" placeholder="Pengurus Anak Ranting Ada">
+							</div>
+							<div class="col-md-4">
+								<input type="text" name="pengurus_anak_ranting_ada" id="pengurus_anak_ranting_ada" class="form-control" placeholder="Pengurus Anak Ranting Ada">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">KPA (jumlah/ada)</label>
+							<div class="col-md-4">
+								<input type="text" name="pengurus_kpa" id="pengurus_kpa" class="form-control" placeholder="Pengurus KPA">
+							</div>
+							<div class="col-md-4">
+								<input type="text" name="pengurus_kpa_ada" id="pengurus_kpa_ada" class="form-control" placeholder="Pengurus KPA Ada">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-warning"  id="barangbuktibtn">Simpan</button>
+				</div>
+			</div>
+		<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+		</form>
+	</div>
+</div>
+
+<div class="modal primary" id="editProvinsi" role="dialog" aria-labelledby="editProvinsiLabel" >
+	<div class="modal-dialog modal-md" role="document">
+		<form action="<?php echo e(asset('proses/statistik')); ?>" name="barangbuktiform" enctype="multipart/form-data" method="post">
+			<div class="modal-content">
+				<div class="modal-header modal-primary">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title modal-primary" id="myModalLabel">Edit Provinsi</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">Provinsi</label>
+							<div class="col-md-8">
+								<?php if(session('idProvinsi') != '' OR session('idProvinsi') == NULL  && session('idRole') == 3): ?>
+									<?php foreach($dataProvinsi as $tmp): ?>
+										<?php echo e(($tmp->geo_prov_id == session('idProvinsi'))?$tmp->geo_prov_nama:''); ?>
+
+									<?php endforeach; ?>
+								<?php endif; ?>
+								<select name="edit_provinsi" id="edit_provinsi" class="<?php echo e($statusProvinsi); ?> form-control custom-field-litle"  >
+									<option selected disabled class="text-hide">--- Pilih Provinsi ---</option>
+									<?php foreach($dataProvinsi as $tmp): ?>
+										<option value="<?php echo e($tmp->geo_prov_id); ?>"><?php echo e($tmp->geo_prov_nama); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">DPC (jumlah/ada)</label>
+							<div class="col-md-4">
+								<input type="hidden" name="edit_pengurus" id="edit_pengurus" class="form-control" placeholder="Pengurus DPC">
+								<input type="text" name="edit_pengurus_pimcab" id="edit_pengurus_pimcab" class="form-control" placeholder="Pengurus DPC">
+							</div>
+							<div class="col-md-4">
+								<input type="text" name="edit_pengurus_pimcab_ada" id="edit_pengurus_pimcab_ada" class="form-control" placeholder="Pengurus DPC">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">PAC (jumlah/ada)</label>
+							<div class="col-md-4">
+								<input type="text" name="edit_pengurus_pac" id="edit_pengurus_pac" class="form-control" placeholder="Pengurus PAC">
+							</div>
+							<div class="col-md-4">
+								<input type="text" name="edit_pengurus_pac_ada" id="edit_pengurus_pac_ada" class="form-control" placeholder="Pengurus PAC">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">Ranting (jumlah/ada)</label>
+							<div class="col-md-4">
+								<input type="text" name="edit_pengurus_ranting" id="edit_pengurus_ranting" class="form-control" placeholder="Pengurus Ranting Ada">
+							</div>
+							<div class="col-md-4">
+								<input type="text" name="edit_pengurus_ranting_ada" id="edit_pengurus_ranting_ada" class="form-control" placeholder="Pengurus Ranting Ada">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">Anak Ranting (jumlah/ada)</label>
+							<div class="col-md-4">
+								<input type="text" name="edit_pengurus_anak_ranting" id="edit_pengurus_anak_ranting" class="form-control" placeholder="Pengurus Anak Ranting Ada">
+							</div>
+							<div class="col-md-4">
+								<input type="text" name="edit_pengurus_anak_ranting_ada" id="edit_pengurus_anak_ranting_ada" class="form-control" placeholder="Pengurus Anak Ranting Ada">
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="nama" class="col-md-4">KPA (jumlah/ada)</label>
+							<div class="col-md-4">
+								<input type="text" name="edit_pengurus_kpa" id="edit_pengurus_kpa" class="form-control" placeholder="Pengurus KPA">
+							</div>
+							<div class="col-md-4">
+								<input type="text" name="edit_pengurus_kpa_ada" id="edit_pengurus_kpa_ada" class="form-control" placeholder="Pengurus KPA Ada">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-warning"  id="barangbuktibtn">Simpan</button>
+				</div>
+			</div>
+		<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+		</form>
+	</div>
+</div>
+
+<div class="content-wrapper min-height" style="min-height:1px;">
+	<section class="content-header">
+	  <h1>
+		Master Data
+		<small>Statistik</small>
+	  </h1>
+	  <ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li>Master Data</li>
+		<li class="active">Statistik</li>
+	  </ol>
+	</section>
+
+	<section class="content">
+		<div class="page-ajax">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel">
+					   <div class="response-cari">
+						  <!-- /.box-tools -->
+						  <?php $no=1; ?>
+						  <div class="box-header with-border">
+							  <div class="row">
+								<div class="col-md-2 col-sm-3 col-xs-6">
+									List Provinsi
+								</div>
+								<div class="col-md-2 col-sm-3 col-xs-6 pull-right">
+								  <div id="btnEditProvinsi" class="btn-primary btn hide" data-toggle="modal" data-target="#editProvinsi"> Tambah</div>
+								  <div class="btn-warning btn-block btn" data-toggle="modal" data-target="#tambahProvinsi"><i class="fa fa-plus"></i> Tambah</div>
+								</div>
+							  </div>
+						  </div>
+						  <div class="panel-body">
+							<table class="table table-striped table-hover">
+							  <thead>
+								<tr>
+								  <th>No</th>
+								  <th>Nama Provinsi</th>
+								  <th>Pengurus DPC</th>
+								  <th>Pengurus PAC</th>
+								  <th>Pengurus Ranting</th>
+								  <th>Pengurus Anak Ranting</th>
+								  <th>Pengurus KPA</th>
+								  <th width="150">Aksi</th>
+								</tr>
+							  </thead>
+							  <tbody>
+							  <?php $no =1; ?>
+							  <?php foreach($data as $tmp): ?>
+							  <?php
+								$dataEdit = "'".$tmp->pengurus_id."','".$tmp->geo_prov_id."','".$tmp->pengurus_pimcab."','".$tmp->pengurus_pac."','".$tmp->pengurus_ranting."','".$tmp->pengurus_anak_ranting."','".$tmp->pengurus_kpa."','".$tmp->pengurus_pimcab_ada."','".$tmp->pengurus_pac_ada."','".$tmp->pengurus_ranting_ada."','".$tmp->pengurus_anak_ranting_ada."','".$tmp->pengurus_kpa_ada."'";
+							  ?>
+							  <tr>
+								<td><?php echo e($no++); ?></td>
+								<td><?php echo e($tmp->geo_prov_nama); ?></td>
+								<td><?php echo e($tmp->pengurus_pimcab_ada); ?> / <?php echo e($tmp->pengurus_pimcab); ?></td>
+								<td><?php echo e($tmp->pengurus_pac_ada); ?> / <?php echo e($tmp->pengurus_pac); ?></td>
+								<td><?php echo e($tmp->pengurus_ranting_ada); ?> / <?php echo e($tmp->pengurus_ranting); ?></td>
+								<td><?php echo e($tmp->pengurus_anak_ranting_ada); ?> / <?php echo e($tmp->pengurus_anak_ranting); ?></td>
+								<td><?php echo e($tmp->pengurus_kpa_ada); ?> / <?php echo e($tmp->pengurus_kpa); ?></td>
+								<td>								
+								  <div onclick="detailStatistik('<?php echo e($tmp->geo_prov_id); ?>')" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"><i class="fa fa-search"></i></div>
+								  <div class="<?php echo e((session('idProvinsi') != $tmp->geo_prov_id && session('idRole') == 3)?$statusProvinsi:''); ?>  btn btn-warning" onclick='editStatistik(<?php echo e($dataEdit); ?>)'><span class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"></span></div></a>
+								  <a href="<?php echo e(asset('proses/statistik/'.$tmp->pengurus_id)); ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"><div class=" <?php echo e((session('idProvinsi') != $tmp->geo_prov_id && session('idRole') == 3)?$statusProvinsi:''); ?>  btn-danger btn"><span class="glyphicon glyphicon-trash"></span></div></a>
+								  <div onclick="printStatistik('<?php echo e($tmp->geo_prov_id); ?>')" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="fa fa-print"></i></div>
+								</td>
+							  </tr>
+							  <?php endforeach; ?>
+							  </tbody>
+							</table>
+						  </div>
+					   </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+<script src="<?php echo e(asset('asset/plugins/jQuery/jquery-2.2.3.min.js')); ?>"></script>
+<script>
+function editStatistik(pengurus,prov,dpc,pac,ranting,anak_ranting,kpa,dpc_ada,pac_ada,ranting_ada,anak_ranting_ada,kpa_ada){
+	$('#edit_pengurus').val(pengurus);
+	$('#edit_provinsi').val(prov);
+	$('#edit_pengurus_pimcab').val(dpc);
+	$('#edit_pengurus_pac').val(pac);
+	$('#edit_pengurus_ranting').val(ranting);
+	$('#edit_pengurus_anak_ranting').val(anak_ranting);
+	$('#edit_pengurus_kpa').val(kpa);
+	$('#edit_pengurus_pimcab_ada').val(dpc_ada);
+	$('#edit_pengurus_pac_ada').val(pac_ada);
+	$('#edit_pengurus_ranting_ada').val(ranting_ada);
+	$('#edit_pengurus_anak_ranting_ada').val(anak_ranting_ada);
+	$('#edit_pengurus_kpa_ada').val(kpa_ada);
+	$('#btnEditProvinsi').click();
+}
+</script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

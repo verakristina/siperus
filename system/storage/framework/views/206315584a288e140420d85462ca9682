@@ -1,0 +1,35 @@
+<?php $__env->startSection('table_action'); ?>	
+<td style="width:1%;white-space:nowrap;"">
+	<div onclick="detailUser('<?php echo e(@$val->bio_id); ?>')" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"><i class="fa fa-search"></i></div>
+	<div onclick="actionEdit(<?php echo e($val->bio_id); ?>,'<?php echo e(isset($val->nama) ? $val->nama : ''); ?>',<?php echo e(isset($val->bio_id) ? $val->bio_id : 'null'); ?>,'<?php echo e(@$val->nama_jabatan?:'-'); ?>',<?php echo e(isset($val->jabatan_id) ? $val->jabatan_id : 'null'); ?>,<?php echo e('{'.(@$obj?:'').'}'); ?>)" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"><i class="fa fa-edit"></i></div>
+	<a href="<?php echo e(asset('input/hapus/'.$type.'/'.$val->bio_id)); ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?');" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+	<div onclick="printUser('<?php echo e(@$val->bio_id); ?>')" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="fa fa-print"></i></div>
+	<div onclick="getExcel('<?php echo e(@$val->bio_id); ?>')" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Excel"><i class="fa fa-file"></i></div>
+</td>
+<?php $__env->stopSection(true); ?>
+<?php $__env->startSection('table_head'); ?>
+	<th>Nama</th>
+	<th>JK</th>
+	<th>No.SK</th>
+	<th>No.KTA</th>
+	<th>Telp</th>
+	<th>Email</th>
+	<th width="150">Aksi</th>
+<?php $__env->stopSection(true); ?>
+<?php $__env->startSection('table_data'); ?>
+	<td><?php echo e($val->eksekutif_nama?:'-'); ?></td>
+	<td><?php echo e($val->bio_nama_depan?:'-'); ?></td>
+	<td><?php echo e(($val->bio_jenis_kelamin==1?'L':($val->bio_jenis_kelamin==2?'P':'-'))); ?></td>
+	<td><?php echo e($val->bio_sk_no?:'-'); ?></td>
+	<td><?php echo e($val->bio_kta_no?:'-'); ?></td>
+	<td><?php echo e($val->bio_telephone?:'-'); ?></td>
+	<td><?php echo e($val->bio_email?:'-'); ?></td>
+<?php $__env->stopSection(true); ?>
+<?php $__env->startSection('table_data2'); ?>
+<div id="btnEditData" data-target="#modal-input-struk" data-toggle="modal" class="btn-block fa fa-edit hide"></i>		
+		
+<?php $__env->stopSection(true); ?>
+<?php $__env->startSection('doremi'); ?>
+	hello world!!
+<?php $__env->stopSection(); ?>
+<?php echo $__env->yieldContent('teses'); ?>

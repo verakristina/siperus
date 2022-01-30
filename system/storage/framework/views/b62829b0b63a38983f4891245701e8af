@@ -1,0 +1,36 @@
+$(function(){
+		$('#prov').change(function(){
+			<?php echo $__env->yieldContent('goto_prov'); ?>
+		});
+
+		$('#kab').change(function(){
+			<?php echo $__env->yieldContent('goto_kab'); ?>
+		});
+		$('#kec').change(function(){
+			<?php echo $__env->yieldContent('goto_kec'); ?>
+		});
+		$('#kel').change(function(){
+			<?php echo $__env->yieldContent('goto_kel'); ?>
+		});
+		$('#rw').change(function(){
+			<?php echo $__env->yieldContent('goto_rw'); ?>
+		});
+
+		$('#prov2').change(function(){
+			<?php echo $__env->yieldContent('goto_prov2'); ?>
+		});
+
+		$('#kab2').change(function(){
+			<?php echo $__env->yieldContent('goto_kab2'); ?>
+		});
+		$('#kec2').change(function(){
+			<?php echo $__env->yieldContent('goto_kec2'); ?>
+		
+		});
+		$('#kel2').change(function(){
+			<?php echo $__env->yieldContent('goto_kel2'); ?>
+		});
+		$('#rw2').change(function(){		
+			<?php echo $__env->yieldContent('goto_rw2'); ?>
+		});
+	});

@@ -1,0 +1,26 @@
+<?php $__env->startSection('table_action'); ?>	
+	<td style="width:1%;white-space:nowrap;">
+		<div onclick="detailStatistik('<?php echo e($tmp->pengurus_id); ?>')" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"><i class="fa fa-search"></i></div>
+		<div class="<?php echo e((session('idProvinsi2') != $tmp->geo_prov_id && session('idRole') == 3)?'hide':''); ?>  btn btn-warning" onclick="editStatistik(<?php echo e($dataEdit); ?>)"><span class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"></span></div></a>
+		<a href="<?php echo e(asset('proses/statistik/'.$tmp->pengurus_id)); ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"><div class=" <?php echo e((session('idProvinsi2') != $tmp->geo_prov_id && session('idRole') == 3)?'hide':''); ?>  btn-danger btn"><span class="glyphicon glyphicon-trash"></span></div></a>
+		<div onclick="printStatistik('<?php echo e($tmp->geo_prov_id); ?>')" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="fa fa-print"></i></div>
+	</td>
+<?php $__env->stopSection(true); ?>
+<?php $__env->startSection('table_head'); ?>
+	<th>Nama</th>
+	<th>Jenis Kelamin</th>
+	<th>Nomer SK</th>
+	<th>Nomer KTA</th>
+	<th>Telephone</th>
+	<th>Email</th>
+	<th width="150">Aksi</th>
+<?php $__env->stopSection(true); ?>
+
+<?php $__env->startSection('table_data'); ?>
+	<td><?php echo e($tmp->geo_prov_nama); ?></td>
+	<td><?php echo e($tmp->pengurus_pimcab_ada); ?> / <?php echo e($tmp->pengurus_pimcab); ?></td>
+	<td><?php echo e($tmp->pengurus_pac_ada); ?> / <?php echo e($tmp->pengurus_pac); ?></td>
+	<td><?php echo e($tmp->pengurus_ranting_ada); ?> / <?php echo e($tmp->pengurus_ranting); ?></td>
+	<td><?php echo e($tmp->pengurus_anak_ranting_ada); ?> / <?php echo e($tmp->pengurus_anak_ranting); ?></td>
+	<td><?php echo e($tmp->pengurus_kpa_ada); ?> / <?php echo e($tmp->pengurus_kpa); ?></td>
+<?php $__env->stopSection(true); ?>

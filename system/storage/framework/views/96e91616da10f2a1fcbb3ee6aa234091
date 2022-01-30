@@ -1,0 +1,73 @@
+
+<div id="containerLine<?php echo e($type); ?>" style="min-width: 100%; height: 205px; margin: 0 auto"></div>
+
+<?php
+	if($type == 'provinsi'){
+		$struktur = 'DPD';
+	} else if($type == 'kabupaten'){
+		$struktur = 'DPC';
+	} else if($type == 'kecamatan'){
+		$struktur = 'PAC';
+	} else if($type == 'kelurahan'){
+		$struktur = 'PR';
+	} else if($type == 'rw'){
+		$struktur = 'PAR';
+	} else if($type == 'rt'){
+		$struktur = 'KPA';
+	} else {
+		$stuktur = '';		
+	}
+?>
+<script type="text/javascript">
+var datas = '';
+$(function () {
+	
+	Highcharts.setOptions({
+		lang: {
+			decimalPoint: ',',
+            thousandsSep: '.'
+		}
+	});
+    $('#containerLine<?php echo e($type); ?>').highcharts({
+	/* Highcharts.chart('containerLine<?php echo e($type); ?>', { */
+		chart: {
+			type: 'column',
+			backgroundColor: 'rgba(255, 255, 255,0)'
+		},
+		title: {
+			text: 'DATA <?php echo e(strtoupper($struktur)); ?>'
+		},
+		credits: {
+			enabled : false
+		}, 
+		xAxis: {     
+			categories: [
+				'DATA <?php echo e(strtoupper($struktur)); ?>'
+			],
+			crosshair: true
+		},
+		tooltip: {
+			yDecimals: 2 // If you want to add 2 decimals
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: false
+			}
+		},
+		plotOptions: {
+			series: {
+				borderWidth: 0,
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:f}'
+				}
+			}
+		}<?php echo $dataSeries; ?>
+	});
+	var datas1 = $('#containerLine<?php echo e($type); ?> .highcharts-series-0 .highcharts-data-label text tspan').html();
+	var datas2 = $('#containerLine<?php echo e($type); ?> .highcharts-series-1 .highcharts-data-label text tspan').html();
+	$('#containerLine<?php echo e($type); ?> .highcharts-series-0 .highcharts-data-label text tspan').html(parseInt(datas1).toLocaleString('id'));
+	$('#containerLine<?php echo e($type); ?> .highcharts-series-1 .highcharts-data-label text tspan').html(parseInt(datas2).toLocaleString('id'));
+});
+</script>

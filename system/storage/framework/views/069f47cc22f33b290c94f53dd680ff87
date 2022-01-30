@@ -1,0 +1,72 @@
+<?php $__env->startSection('title-page','Data Pengurus DPR-RI '); ?>
+
+<?php $__env->startSection('content'); ?>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/jquery-3.1.1.js ')); ?>"></script>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/AhmadApp.js ')); ?>"></script>
+
+
+	<?php $__env->startSection('modal_struk_tipe','DPR-RI'); ?>
+	<?php $__env->startSection('struk_tipe_menu','Data Anggota'); ?>
+	<?php $__env->startSection('struk_tipe_sub_menu','Anggota Legislatif'); ?>
+	<?php $__env->startSection('struk_tipe_box_header','List DPR-RI'); ?>
+	<?php $__env->startSection('use_jabatan','none'); ?>
+	<?php $__env->startSection('use_no_kta','none'); ?>
+	<?php $__env->startSection('use_no_sk','none'); ?>
+	<?php $__env->startSection('use_tgl_sk','none'); ?>
+	<?php $__env->startSection('name-button','Set'); ?>
+
+	<?php $__env->startSection('modal_struk_input_tambahan'); ?>
+		<?php $__env->startSection('indo_combo_dapil','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+	
+	<?php $__env->startSection('sk_baru', $sk_baru); ?>
+
+	<?php $__env->startSection('content_action_tambah','tambah/dprri'); ?>
+	<?php $__env->startSection('content_action_edit','edit/dprri/'); ?>
+	<?php $__env->startSection('content_filter_combo'); ?>
+	<?php $__env->stopSection(); ?>
+	<?php $__env->startSection('content_table_header'); ?>
+		<tr>
+		  <th>No</th>
+		  <th>Dapil</th>
+		  <th>Nama</th>
+		  <th>JK</th>
+		  <th>No.SK</th>
+		  <th>No.KTA</th>
+		  <th>Telp</th>
+		  <th>Email</th>
+		  <th width="150">Aksi</th>
+		</tr>
+	<?php $__env->stopSection(); ?>	
+
+	<?php $__env->startSection('content_table_body'); ?>
+		<?php /**/$no =1/**/ ?>
+		<?php /**/$bio_xxx_id='bio_dprri_id'/**/ ?>
+		<?php /**/$type='dprri'/**/ ?>
+		  <?php foreach($data as $val): ?>
+		  
+		  <?php echo $__env->make('main.anggota.legislatif.include.table_content', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		  <tr>
+		  <td><?php echo e($no++); ?></td>
+		  <td><?php echo e($val->nama_dapil); ?></td>
+			<?php echo $__env->yieldContent('table_data'); ?>
+			<?php echo $__env->yieldContent('table_action'); ?>
+		  </tr>
+		  <?php endforeach; ?>
+	<?php $__env->stopSection(); ?>
+
+	<?php echo $__env->make('main.input.section_content_struktur', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $__env->make('main.input.section_modal_struktur', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $__env->make('main.anggota.partai.include.modal_detail', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->startSection('content_action_edit_func'); ?>
+
+	<?php $__env->stopSection(); ?>
+<?php $__env->stopSection(); ?>
+<script type="text/javascript" src="<?php echo e(asset('asset/js/jquery-3.1.1.js ')); ?>"></script>
+<script type="text/javascript">
+	$('document').ready(function(){
+		changeDapilOptionKPU('<?php echo e(session('idProvinsi2')); ?>','#dapil','1','<?php echo e(session('idProvinsi2')); ?>','');
+	});
+</script>
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

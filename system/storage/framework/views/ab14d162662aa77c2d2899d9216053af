@@ -1,0 +1,40 @@
+<?php $__env->startSection('table_action'); ?>	
+<td style="width:1%;white-space:nowrap;">
+	<div onclick="detailUser(`<?php echo e(@$val->bio_id); ?>`)" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"><i class="fa fa-search"></i></div>
+	<div onclick="actionEdit(<?php echo e($val->r_bio_id); ?>,`<?php echo e(isset($val->nama) ? $val->nama : ''); ?>`,<?php echo e(isset($val->id_anggota) ? $val->id_anggota : 'null'); ?>,`<?php echo e(@$val->nama_jabatan?:'-'); ?>`,<?php echo e(isset($val->jabatan_id) ? $val->jabatan_id : 'null'); ?>,<?php echo e('{'.(@$obj?:'').'}'); ?>)" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"><i class="fa fa-edit"></i></div>
+	<a href="<?php echo e(asset('input/hapus/'.$type.'/'.$val->r_bio_id)); ?>" onclick="return confirm('Apakah anda yakin ingin menhapus data ini?');" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+	<div onclick="printUser('<?php echo e(@$val->bio_id); ?>')" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="fa fa-print"></i></div>
+	<div onclick="getExcel('<?php echo e(@$val->bio_id); ?>')" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Excel"><i class="fa fa-file"></i></div>
+</td>
+<?php $__env->stopSection(true); ?>
+<?php $__env->startSection('table_struk_header'); ?>
+	<tr>
+		<th>No</th>
+		<th>Jabatan</th>
+		<th>Nama</th>
+		<!-- <th>L/P</th> -->
+		<th>No.SK</th>
+		<th>No.KTA</th>
+		<th>No.Telp</th>
+		<th>Email</th>
+		<th>Aksi</th>
+	</tr>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('table_data'); ?>
+		<td><?php echo e(ucwords(strtolower(isset($val->nama_jabatan)?$val->nama_jabatan:'-'))?:'-'); ?></td>
+		<td><?php echo e($val->nama?:'-'); ?></td>
+		<td><?php echo e(($val->gender==1?'L':($val->gender==0?'P':($val->gender==2?'P':'-')))); ?></td>
+		<td><?php echo e($val->no_sk2?:'-'); ?></td>
+		<td><?php echo e($val->no_kta2?str_replace('.', '', $val->no_kta2):'-'); ?></td>
+		<td><?php echo e($val->bio_nomer_identitas?:'-'); ?></td>
+		<td><?php echo e($val->no_hp?:'-'); ?></td>
+		<!-- <td>$val->email?:'-'</td> -->
+<?php $__env->stopSection(true); ?>
+<?php $__env->startSection('table_data2'); ?>
+<div id="btnEditData" data-target="#modal-input-struk" data-toggle="modal" class="btn-block fa fa-edit hide"></i>		
+		
+<?php $__env->stopSection(true); ?>
+<?php $__env->startSection('doremi'); ?>
+	hello world!!
+<?php $__env->stopSection(); ?>
+<?php echo $__env->yieldContent('teses'); ?>

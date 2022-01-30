@@ -1,0 +1,111 @@
+<?php $__env->startSection('title','Peta'); ?>
+<?php $__env->startSection('title-page','Peta'); ?>
+
+<?php $__env->startSection('content'); ?>
+<?php
+	$kontak_dpd = @$_GET['kontak_dpd'];
+	$kontak_dpc = @$_GET['kontak_dpc'];
+	$suara_tahun = @$_GET['suara_tahun'];
+	$agenda_tahun = @$_GET['agenda_tahun'];
+?>
+		<div class="on-map-menu">
+			<div class="box app-menu" style="border:0px;">
+				<div class="box-header" style="background:#f39c12;color:white;">
+					<div class="col-md-11 col-sm-11 col-xs-11 menu-title" style="font-family: 'Open Sans';font-size:11px;padding:0;color:white;">Filter By :</div>
+					<div class="col-md-1 col-sm-1 col-xs-1 box-tools">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus" style="color:white;"></i></button>
+					</div>
+				</div>
+				<div class="box-body" style="width:100%;">			  
+					<div id="wrapper-200a">
+					<ul class="accordion">				
+						<li id="one" class="files">
+							<a href="#one" onclick="showDPDDPC('all')" class="active">Kontak DPD/ DPC Hanura</a>
+							<ul class="sub-menu">						
+								<li><a href="#one" id="kontakDPD" onclick="showDPD('kontakDPD')" <?php echo ($kontak_dpd=="dpd")?'style="color: #3e5706;"':'' ?>><em>01</em>DPD</a></li>						
+								<li><a href="#one" id="kontakDPC" onclick="showDPC('kontakDPC')" <?php echo ($kontak_dpc=="dpc")?'style="color: #3e5706;"':'' ?>><em>02</em>DPC</a></li>
+							</ul>
+						</li>				
+						<li id="two" class="mail">
+							<a href="#two" onclick="showSuara('all')">Statistik Perolehan Suara Hanura</a>
+							<ul class="sub-menu">						
+								<li><a href="#two" id="suara2016" onclick="showSuara('suara2016')" <?php echo ($suara_tahun=="2016")?'style="color: #3e5706;"':'' ?>><em>01</em>2016</a></li>						
+								<li><a href="#two" id="suara2017" onclick="showSuara('suara2017');" <?php echo ($suara_tahun=="2017")?'style="color: #3e5706;"':'' ?>><em>02</em>2017</a></li>
+							</ul>
+						</li>				
+						<li id="three" class="cloud">
+							<a href="#three" onclick="showDPDDPC()">Bidang Organisasi Hanura</a>
+							<ul class="sub-menu">						
+								<li><a href="#three" id="bidangDPD" onclick="showDPD('bidangDPD')" ><em>01</em>DPD</a></li>						
+								<li><a href="#three" id="bidangDPC" onclick="showDPC('bidangDPC')" ><em>02</em>DPC</a></li>
+							</ul>
+						</li>				
+						<li id="four" class="mail">
+							<a href="#four" onclick="showAgenda('all')" >Agenda Musda dan Muscab</a>
+							<ul class="sub-menu">						
+								<li><a href="#four" id="agenda2016" onclick="showAgenda('agenda2016');" <?php echo ($agenda_tahun=="2016")?'style="color: #3e5706;"':'' ?>><em>01</em>2016</a></li>						
+								<li><a href="#four" id="agenda2017" onclick="showAgenda('agenda2017');" <?php echo ($agenda_tahun=="2017")?'style="color: #3e5706;"':'' ?>><em>02</em>2017</a></li>
+							</ul>
+						</li>			
+					</ul>			
+				</div>
+				</div>
+			</div>	
+		</div>
+
+		<div id="legend" style="min-width:200px; display:none;">
+			<div class="box app-menu" style="border:0px;">
+				<div class="box-header" style="background:#f39c12;color:white;">
+					<div class="col-md-11 col-sm-11 col-xs-11 menu-title" style="font-family: 'Open Sans';font-size:11px;padding:0;color:white;">Legend :</div>
+					<div class="col-md-1 col-sm-1 col-xs-1 box-tools">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus" style="color:white;"></i></button>
+					</div>
+				</div>
+				<div class="box-body" style="width:100%;" style="margin: 0; padding: 0;">			  
+					<div class="col-md-6 col-sm-6 col-xs-6" style="margin: 0; padding: 0;">
+						<div class="form-group">
+							<img src="<?php echo e(asset('asset/icon/user-green.png')); ?>" alt="" /> Gubernur
+						</div>
+						<div class="form-group">
+							<img src="<?php echo e(asset('asset/icon/user-orange.png')); ?>" alt="" /> Bupati
+						</div>
+						<div class="form-group">
+							<img src="<?php echo e(asset('asset/icon/user-blue.png')); ?>" alt="" /> Walikota
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6 col-xs-6" style="margin: 0; padding: 0;">
+						<div class="form-group">
+							<img src="<?php echo e(asset('asset/icon/user-purple.png')); ?>" alt="" /> DPD
+						</div>
+						<div class="form-group">
+							<img src="<?php echo e(asset('asset/icon/user-red.png')); ?>" alt="" /> DPC
+						</div>
+						<div class="form-group">
+							<img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2238%22%20height%3D%2238%22%20viewBox%3D%220%200%2038%2038%22%3E%3Cpath%20fill%3D%22%23808080%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%22.5%22%20d%3D%22M34.305%2016.234c0%208.83-15.148%2019.158-15.148%2019.158S3.507%2025.065%203.507%2016.1c0-8.505%206.894-14.304%2015.4-14.304%208.504%200%2015.398%205.933%2015.398%2014.438z%22%2F%3E%3Ctext%20transform%3D%22translate%2819%2018.5%29%22%20fill%3D%22%23fff%22%20style%3D%22font-family%3A%20Arial%2C%20sans-serif%3Bfont-weight%3Abold%3Btext-align%3Acenter%3B%22%20font-size%3D%2212%22%20text-anchor%3D%22middle%22%3E%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" /> Survey
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+		
+		<div class="row" style="height:100%;width:100%;margin:0;">
+			<div class="col-md-12" style="height:100%;padding:0;">
+				<div class="response-maps" style="height:100%;">
+					<?php echo $__env->make('index_maps', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+				</div>
+			</div>
+		</div>
+
+		<div class="row scroll no-margin">
+			<div class="col-md-1 pull-right">
+				<div class="row scroll-button" id="btn-up">
+					<div class="col-md-12"><i class="fa fa-angle-up" aria-hidden="true"></i></div>
+				</div>
+				<div class="row scroll-button" id="btn-down">
+					<div class="col-md-12"><i class="fa fa-angle-down" aria-hidden="true"></i></div>
+				</div>
+			</div>
+		</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

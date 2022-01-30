@@ -1,0 +1,179 @@
+<div class="content-wrapper min-height" style="min-height:1px;">
+	<section class="content-header">
+		<h1>
+			<?php echo $__env->yieldContent('menu'); ?>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<?php foreach($breadcrumb as $val): ?>
+				<li><?php echo e($val); ?></li>
+			<?php endforeach; ?>
+		</ol>
+	</section>
+	<?php if(session('idProvinsi') != '' OR session('idProvinsi') == NULL && session('idRole') == 3): ?>
+			<?php /**/ $statusProvinsi = '2' /**/ ?>
+			<?php /**/ $Provinsi = session('idProvinsi2') /**/ ?>
+	<?php else: ?>
+			<?php /**/ $statusProvinsi = '' /**/ ?>
+			<?php /**/ $Provinsi = '1' /**/ ?>
+	<?php endif; ?>	
+	<section class="content">
+		<div class="page-ajax">
+			<div class="row" style="margin-bottom:15px;">
+				<div class="col-md-12">
+					<?php echo $__env->yieldContent('content-filter'); ?>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel">
+						<div class="box-header with-border">
+							<div class="row">
+								<div class="col-md-2 col-sm-3 col-xs-6">
+									<h4>Legend</h4>
+								</div>
+							</div>
+						</div>				
+						<div class="box-body">
+							<div class="row">
+								<div class="col-md-3"><td>1. </td><td>Status Kantor</td></div>
+								<div class="col-md-3"><td>2. </td><td>Alamat</td></div>
+								<div class="col-md-3"><td>3. </td><td>Ibukota</td></div>
+								<div class="col-md-3"><td>4. </td><td>Keaktifan Pengurus</td></div>
+								<div class="col-md-3"><td>5. </td><td>30% Perempuan</td></div>
+								<div class="col-md-3"><td>6. </td><td>Jumlah KTA</td></div>
+								<div class="col-md-3"><td>7. </td><td>Ruang Kerja (K)</td></div>
+								<div class="col-md-3"><td>8. </td><td>Ruang Kerja (S)</td></div>
+								<div class="col-md-3"><td>9. </td><td>Ruang Kerja (B)</td></div>
+								<div class="col-md-3"><td>10. </td><td>Staf Admin</td></div>
+								<div class="col-md-3"><td>11. </td><td>Papan Nama</td></div>
+								<div class="col-md-3"><td>12. </td><td>Pres & Wapres</td></div>
+								<div class="col-md-3"><td>13. </td><td>Garuda</td></div>
+								<div class="col-md-3"><td>14. </td><td>Ketum & Sekjen</td></div>
+								<div class="col-md-3"><td>15. </td><td>Nomer Rekning</td></div>
+							</div>
+							<!--<table>
+								<tbody>
+									<tr><td>1. </td><td>Status Kantor</td></tr>
+									<tr><td>2. </td><td>Alamat</td></tr>
+									<tr><td>3. </td><td>Ibukota</td></tr>
+									<tr><td>4. </td><td>Keaktifan Pengurus</td></tr>
+									<tr><td>5. </td><td>30% Perempuan</td></tr>
+									<tr><td>6. </td><td>Jumlah KTA</td></tr>
+									<tr><td>7. </td><td>Ruang Kerja</td></tr>
+									<tr><td>8. </td><td>Staf Admin</td></tr>
+									<tr><td>9. </td><td>Papan Nama</td></tr>
+									<tr><td>10	. </td><td>Pres & Wapres</td></tr>
+									<tr><td>11	. </td><td>Garuda</td></tr>
+									<tr><td>12	. </td><td>Ketum & Sekjen</td></tr>
+									<tr><td>13	. </td><td>Nomer Rekning</td></tr>
+								</tbody>
+							</table>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<?php if(session('idRole') == 1 || session('idRole') == 3 || session('idRole') == 11): ?>
+			<div class="row <?php echo $__env->yieldContent('box-dpd'); ?>">
+				<div class="col-md-12">
+					<div class="panel">
+						<div class="box-header with-border">
+							<div class="row">
+								<div class="col-md-2 col-sm-3 col-xs-6">
+									<h4><?php echo $__env->yieldContent('box-header-dpd'); ?></h4>
+								</div>
+								<?php if(session('statActHide') != 1): ?>
+								<div class="col-md-2 col-sm-3 col-xs-6 pull-right hide ">
+									<div class="<?php echo $__env->yieldContent('add-button','hide'); ?> btn-block  btn-warning btn" data-toggle="modal" data-target="#modal-input-struk" onclick="actionTambah()"><i class="fa fa-plus"></i> Tambah</div>
+								</div>
+								<div class="<?php echo $__env->yieldContent('download-button','show'); ?> col-md-2 col-sm-3 col-xs-6 pull-right">
+									<div class="btn-warning btn-block btn" onclick="actionDownload('excel','verifikasi','DPD<?php echo e((session('idRole') == 3)?$statusProvinsi:''); ?>','<?php echo e((session('idRole') == 3)?$Provinsi:''); ?>')"><i class="fa fa-print"></i> Excel</div>
+								</div>
+								<div class="<?php echo $__env->yieldContent('download-button','show'); ?> col-md-2 col-sm-3 col-xs-6 pull-right">
+									<div class="btn-warning btn-block btn" onclick="actionDownload('pdf','verifikasi','DPD<?php echo e((session('idRole') == 3)?$statusProvinsi:''); ?>','<?php echo e((session('idRole') == 3)?$Provinsi:''); ?>')"><i class="fa fa-print"></i> PDF</div>
+								</div>
+								<?php endif; ?>
+							</div>
+						</div>				
+						<div class="box-body table-responsive">
+							<table class="table table-hover table-striped <?php echo e((session('idRole') == 3)?'no-paging':''); ?>" id="table">
+								<thead>
+									<?php echo $__env->yieldContent('table-header-dpd'); ?>
+								</thead>
+								<tbody>
+									<?php echo $__env->yieldContent('table-body-dpd'); ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		<?php endif; ?>
+			<div class="row <?php echo $__env->yieldContent('box-dpc'); ?>">
+				<div class="col-md-12">
+					<div class="panel">
+						<div class="box-header with-border">
+							<div class="row">
+								<div class="col-md-2 col-sm-3 col-xs-6">
+									<h4><?php echo $__env->yieldContent('box-header-dpc'); ?></h4>
+								</div>
+								<?php if(session('statActHide') != 1): ?>
+								<div class="col-md-2 col-sm-3 col-xs-6 pull-right hide">
+									<div class="<?php echo $__env->yieldContent('add-button','hide'); ?> btn-block  btn-warning btn" data-toggle="modal" data-target="#modal-input-struk" onclick="actionTambah()"><i class="fa fa-plus"></i> Tambah</div>
+								</div>
+								<div class="<?php echo $__env->yieldContent('download-button','show'); ?> col-md-2 col-sm-3 col-xs-6 pull-right">
+									<div class="btn-warning btn-block btn" onclick="actionDownload('excel','verifikasi','DPC<?php echo e((session('idRole') == 3)?$statusProvinsi:''); ?>','<?php echo e((session('idRole') == 3)?$Provinsi:''); ?>')"><i class="fa fa-print"></i> Excel</div>
+								</div>
+								<div class="<?php echo $__env->yieldContent('download-button','show'); ?> col-md-2 col-sm-3 col-xs-6 pull-right">
+									<div class="btn-warning btn-block btn" onclick="actionDownload('pdf','verifikasi','DPC<?php echo e((session('idRole') == 3)?$statusProvinsi:''); ?>','<?php echo e((session('idRole') == 3)?$Provinsi:''); ?>')"><i class="fa fa-print"></i> PDF</div>
+								</div>
+								<?php endif; ?>
+							</div>
+						</div>				
+						<div class="box-body table-responsive">
+							<table class="table table-hover table-striped <?php echo e((session('idRole') == 4)?'no-paging':''); ?>" id="table">
+								<thead>
+									<?php echo $__env->yieldContent('table-header-dpc'); ?>
+								</thead>
+								<tbody>
+									<?php echo $__env->yieldContent('table-body-dpc'); ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+<script type="text/javascript">
+function verifikasiDownload(jenis,prov){
+		window.location = '<?php echo e(asset("download/verifikasi")); ?>?jenis='+jenis+'&prov='+prov;
+		// window.location = '<?php echo e(url()); ?>/system/resources/views/main/download/verifikasi.php?jenis='+jenis+'&prov='+prov;
+	}
+function actionEdit(targetId,bioId,obj) {
+	$('#modal-input-struk').modal('show');
+	jQuery('#form-input-struk').attr('action',"<?php echo e(url()); ?>/<?php echo $__env->yieldContent('action-edit'); ?>"+targetId);
+	jQuery('#submiter').text('Edit');
+	jQuery('#my-modal-label').text('Edit <?php echo $__env->yieldContent('modal_struk_tipe'); ?>');
+	<?php echo $__env->yieldContent('content_action_edit_func'); ?>
+}
+function actionTambah(){
+	jQuery('#form-input-struk').attr('action',"<?php echo e(url()); ?>/<?php echo $__env->yieldContent('action-tambah'); ?>");
+	jQuery('#submiter').text('Tambah');
+	jQuery('#my-modal-label').text('Tambah <?php echo $__env->yieldContent('modal_struk_tipe'); ?>');
+}
+function detailVerif(id){
+	window.location.href='<?php echo e(url().'/verifikasi/detail'); ?>/'+id;
+}
+$(function(){	
+	$('#prov').change(function(){
+		var provId = $(this).val();
+		<?php echo $__env->yieldContent('goto_prov'); ?>
+		changeKabupatenOptionKPU(null,'#kab',provId);
+
+	});
+});
+</script>

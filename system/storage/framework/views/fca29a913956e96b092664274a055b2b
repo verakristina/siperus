@@ -1,0 +1,132 @@
+<?php $__env->startSection('content'); ?>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/jquery-3.1.1.js ')); ?>"></script>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/AhmadApp.js ')); ?>"></script>
+	<?php $__env->startSection('title-page','Data Pengurus PIMCAM '); ?>
+
+
+	<?php $__env->startSection('modal_struk_tipe','PIMCAM'); ?>
+	<?php $__env->startSection('struk_tipe_menu','Data Pengurus'); ?>
+	<?php $__env->startSection('struk_tipe_sub_menu','PIMCAM'); ?>
+	<?php $__env->startSection('struk_tipe_box_header','List PIMCAM'); ?>
+
+	<?php $__env->startSection('sk_baru', $sk_baru); ?>
+
+	<?php $__env->startSection('modal_struk_input_tambahan'); ?>
+		<?php $__env->startSection('indo_combo_prov','initial'); ?>
+		<?php $__env->startSection('indo_combo_kab','initial'); ?>
+		<?php $__env->startSection('indo_combo_kec','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+	<?php $__env->startSection('content_filter_combo'); ?>
+		<?php $__env->startSection('indo_combo_fprov','initial'); ?>
+		<?php $__env->startSection('indo_combo_fkab','initial'); ?>
+		<?php $__env->startSection('indo_combo_fkec','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_filter_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+	<?php $__env->startSection('content_title_header_small','List PIMCAM'); ?>
+	<?php $__env->startSection('content_title_header_small','Data PIMCAM'); ?>
+
+	<?php $__env->startSection('content_action_tambah','tambah/pimcam'); ?>
+	<?php $__env->startSection('content_action_edit','edit/pimcam/'); ?>
+
+	
+	<?php $__env->startSection('goto_kec'); ?>
+	location.href="<?php echo e(url()); ?>/data_pengurus/pimcam/"+provId+"/"+kabId+"/"+kecId;
+	<?php $__env->stopSection(); ?>
+	 
+	<?php if(count($data) != 0): ?>
+		<?php $__env->startSection('content_table_header'); ?>
+			<tr>
+			  <th>No</th>
+			  <th>Jabatan</th>
+			  <th>Nama</th>
+			  <!-- <th>Wilayah</th> -->
+			  <th>No. SK</th>
+			  <th>No. KTA</th>
+			  <th>No. KTP</th>
+			  <th>No. Telp</th>
+			  <th width="1%">Aksi</th>
+			</tr>
+		<?php $__env->stopSection(); ?>	
+		
+		<?php $__env->startSection('content_table_body'); ?>
+			<?php /**/$no =1/**/ ?>
+			<?php /**/$bio_xxx_id='bio_pimcam_id'/**/ ?>
+			<?php /**/$type='pimcam'/**/ ?>
+			  <?php foreach($data as $val): ?>
+			  <?php /**/
+
+				$obj='noSk:`'.$val->no_sk2.
+				'`,turunSK:`'.$val->turun_sk.
+				'`,noKTA:`'.$val->no_kta2.'`'.
+				', noHP : `'.$val->no_hp.'`'.
+				', email : `'.$val->email.'`'
+
+				/**/ ?>
+			  <?php echo $__env->make('main.input.section_generik_content', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+				<tr><div id="btnEditData" data-target="#modal-input-struk" data-toggle="modal" class="btn-block fa fa-edit hide"></i>
+					<td><?php echo e($no++); ?></td>
+					<td><?php echo e(ucwords(strtolower(isset($val->nama_jabatan)?$val->nama_jabatan:'-'))?:'-'); ?></td>
+					<td><?php echo e(ucwords(strtolower($val->nama))?:'-'); ?></td>
+					<!-- <td>{ { ucwords(strtolower(($val->geo_prov_nama.', '.$val->geo_kab_nama.', '.$val->geo_kec_nama)?:'-')) } }</td> -->
+					<td><?php echo e($val->no_sk2?:'-'); ?></td>
+					<td><?php echo e($val->no_kta2?str_replace('.', '', $val->no_kta2):'-'); ?></td>
+					<td><?php echo e($val->bio_nomer_identitas); ?></td>
+					<td><?php echo e($val->no_hp?:'-'); ?></td>
+					<td>
+						<?php echo $__env->yieldContent('table_action'); ?>
+					</td>
+			  </tr>
+			  <?php endforeach; ?>
+			  
+		<?php $__env->stopSection(); ?>
+	<?php else: ?>
+		<?php $__env->startSection('content_table_body'); ?>
+			<tr>
+				<td>Data Tidak Ada</td>
+			</tr>
+		<?php $__env->stopSection(); ?>
+		<?php $__env->startSection('content_table_header'); ?>
+			<tr>
+				<th>Data Tidak Ada</th>
+			</tr>
+		<?php $__env->stopSection(); ?>	
+	<?php endif; ?>
+	
+	<?php if($a_type != ""): ?>
+		<?php $__env->startSection('a_type', $a_type); ?>
+	<?php endif; ?>
+
+	<?php if($a_prov != ""): ?>
+		<?php $__env->startSection('a_prov', $a_prov); ?>
+	<?php endif; ?>
+
+	<?php if($a_kab != ""): ?>
+		<?php $__env->startSection('a_kab', $a_kab); ?>
+	<?php endif; ?>
+
+	<?php if($a_kec != ""): ?>
+		<?php $__env->startSection('a_kec', $a_kec); ?>
+	<?php endif; ?>
+
+	<?php if($a_deskel != ""): ?>
+		<?php $__env->startSection('a_deskel', $a_deskel); ?>
+	<?php endif; ?>
+
+	<?php if($a_rw != ""): ?>
+		<?php $__env->startSection('a_rw', $a_rw); ?>
+	<?php endif; ?>
+	<?php $__env->startSection('content_action_edit_func'); ?>
+		$("#no_sk").val(obj.noSk)
+		$("#no_kta").val(obj.noKTA)
+		$("#no_ktp").val(obj.noKTP)
+		$("#date").val(moment(obj.turunSK).format('DD-MM-YYYY'))
+	<?php $__env->stopSection(); ?>
+
+	<?php echo $__env->make('main.input.section_content_struktur', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $__env->make('main.input.section_modal_struktur', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $__env->make('main.anggota.partai.include.modal_detail', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

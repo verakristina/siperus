@@ -1,0 +1,110 @@
+<?php $__env->startSection('content'); ?>
+<script src="<?php echo e(asset('asset/js/jquery-3.1.1.js')); ?>"></script>
+<script src="<?php echo e(asset('asset/plugins/jQuery/jquery-2.2.3.min.js')); ?>"></script>
+<script src="<?php echo e(asset('asset/plugins/jQueryUI/jquery-ui.min.js')); ?>"></script>
+<script src="<?php echo e(asset('asset/plugins/datatables/jquery.dataTables.js')); ?>"></script>
+<script src="<?php echo e(asset('asset/plugins/datatables/dataTables.responsive.min.js')); ?>"></script>
+<script src="<?php echo e(asset('asset/plugins/datatables/dataTables.bootstrap.min.js')); ?>"></script>
+<script src="<?php echo e(asset('asset/plugins/datatables/responsive.bootstrap.min.js')); ?>"></script>
+<script type="text/javascript" src="<?php echo e(asset('asset/js/wNumb.js ')); ?>"></script>
+<script type="text/javascript" src="<?php echo e(asset('asset/js/lodash.js ')); ?>"></script>
+<script type="text/javascript" src="<?php echo e(asset('asset/js/cleave.js ')); ?>"></script>
+<script type="text/javascript" src="<?php echo e(asset('asset/js/numeral.js ')); ?>"></script>
+	<?php $__env->startSection('title-page','Data Penduduk '); ?>
+
+	<?php $__env->startSection('modal_struk_tipe','Penduduk'); ?>
+	<?php $__env->startSection('tipe_menu','Data Master'); ?>
+	<?php $__env->startSection('tipe_sub_menu','Penduduk'); ?>
+	<?php $__env->startSection('struk_tipe_box_header','List Penduduk'); ?>
+	<?php $__env->startSection('title_tipe','Penduduk'); ?>
+
+	<?php $__env->startSection('modal_input'); ?>
+		<?php $__env->startSection('indo_combo_prov','initial'); ?>
+		<?php $__env->startSection('indo_combo_kab','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		
+		<div class="form-group col-md-12" >
+			<label for="provinsi" class="col-md-3 col-sm-12 col-xs-12">Jumlah Penduduk</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<input id="jumlah-penduduk" type="text" name="penduduk_jumlah" class="form-control" data-bind="value:replyNumber">
+			</div>
+		</div>
+	<?php $__env->stopSection(); ?>
+
+	<?php $__env->startSection('content_filter_combo'); ?>
+		<?php $__env->startSection('indo_combo_fprov','initial'); ?>
+		<?php $__env->startSection('indo_combo_fkab','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_filter_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+
+	<?php $__env->startSection('content_script'); ?>
+
+		<?php echo $__env->make('main.input.section_script_wilayah_generik', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+	<?php $__env->startSection('content_action_tambah','master/tambah_penduduk'); ?>
+	<?php $__env->startSection('content_action_edit','master/edit_penduduk'); ?>
+	
+	<?php $__env->startSection('goto_prov'); ?>
+		location.href="<?php echo e(url()); ?>/master/penduduk/"+provId;
+	<?php $__env->stopSection(); ?>
+	<?php $__env->startSection('goto_kab'); ?>
+		location.href="<?php echo e(url()); ?>/master/penduduk/"+provId+"/"+kabId;
+	<?php $__env->stopSection(); ?>
+
+	<?php $__env->startSection('content_table_header'); ?>
+		<tr>
+		  <th>No</th>
+		  <th>Provinsi</th>
+		  <th>Kabupaten</th>
+		  <th>Jumlah Penduduk</th>
+		  <th width="150">Aksi</th>
+		</tr>
+	<?php $__env->stopSection(); ?>	
+
+	<?php $__env->startSection('content_table_body'); ?>
+		<?php /**/$no =1/**/ ?>
+	
+		  <?php foreach($data as $val): ?>
+
+		  <tr>
+		  		<td><?php echo e($no++); ?></td>
+		  		<td><?php echo e($val->geo_prov_nama); ?></td>
+		  		<td><?php echo e($val->geo_kab_nama); ?></td>
+				<td><?php echo e(ucwords(strtolower(isset($val->penduduk_jumlah)?number_format($val->penduduk_jumlah,0, "," , "."):'-'))?:'-'); ?></td>
+			<td>
+			
+				<div onclick="detailUser('<?php echo e($val->penduduk_id); ?>')" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"><i class="fa fa-search"></i></div>								
+								  
+				<div onclick="actionEdit(<?php echo e(json_encode($val)); ?>)" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit">
+					<i class="fa fa-edit"></i>
+				</div>
+				<a href="<?php echo e(url().'/master/hapus_penduduk/'.$val->penduduk_id); ?>" onclick="return confirm('Apakah anda yakin ingin menhapus data ini?');" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete">
+					<i class="fa fa-trash">
+
+					</i>
+				</a>
+				 <div onclick="printUser('<?php echo e($val->penduduk_id); ?>')" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="fa fa-print"></i></div>
+			</td>
+		  </tr>
+		  <?php endforeach; ?>
+	<?php $__env->stopSection(); ?>
+	<?php $__env->startSection('content_action_edit_func'); ?>
+		jQuery("#modal-input-generik").modal('show');
+		console.log(obj)
+
+		jQuery("#jumlah-penduduk").val(obj.penduduk_jumlah)
+		jQuery("#kab2").val(obj.geo_kab_id)
+		jQuery('#form-input-generik').attr('action',"<?php echo e(url()); ?>/master/edit_penduduk/"+obj.penduduk_id);
+		changeFormatNumber('#jumlah-penduduk');
+	<?php $__env->stopSection(); ?>
+	<?php $__env->startSection('content_action_add_func'); ?>
+		jQuery("#modal-input-generik").modal('show');
+		console.log(jQuery("#modal-input-generik"))
+		jQuery('#form-input-generik').attr('action',"<?php echo e(url()); ?>/master/tambah_penduduk");
+	<?php $__env->stopSection(); ?>
+	<?php echo $__env->make('main.input.section_content_generik', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $__env->make('main.input.section_modal_generik', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

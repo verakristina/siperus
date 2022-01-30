@@ -1,0 +1,165 @@
+<?php $__env->startSection('title-page','Dashboard'); ?>
+
+<?php $__env->startSection('main-sidebar'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+<div class="content-wrapper min-height" style="min-height:1px;">
+	<section class="content-header">
+	  <h1>
+		Dashboard
+		<small></small>
+	  </h1>
+	  <ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li class="active">Dashboard</li>
+	  </ol>
+	</section>
+
+	<section class="content">
+	  <div class="row" style="margin-bottom: 15px;">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+			<select class="form-control custom-field-litle" id="prov" name="prov" required>
+				<option>--- Provinsi ---</option>
+				<?php foreach($dataProvAll as $tmps): ?>									
+					<option value="<?php echo e($tmps->geo_prov_id); ?>" <?php echo e(($tmps->geo_prov_id == @$prov)?'selected':'non-selected'); ?>> <?php echo e($tmps->geo_prov_nama); ?> </option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+	  </div>
+	  <div class="row" style="margin-bottom: 15px;">
+		<div class="col-md-12">
+			<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+		</div>
+	  </div>
+	  <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-map-marker"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Kabupaten / Kota</span>
+              <span class="info-box-number"><?php echo e($dataKab); ?> / <?php echo e($dataKabAll); ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-map-marker"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Kecamatan</span>
+              <span class="info-box-number"><?php echo e($dataKec); ?> / <?php echo e($dataKecAll); ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-map-marker"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Kelurahan</span>
+              <span class="info-box-number"><?php echo e($dataKel); ?> / <?php echo e($dataKelAll); ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col --> 
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-map-marker"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">RW</span>
+              <span class="info-box-number"><?php echo e($dataRW); ?> / <?php echo e($dataRWAll); ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col --> 
+		
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Penduduk</span>
+              <span class="info-box-number"><?php echo e($dataTotalPendudukAll); ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col --> 
+      </div>
+      <!-- /.row -->
+	</section>
+</div>
+<script src="<?php echo e(asset('asset/plugins/jQuery/jquery-2.2.3.min.js')); ?>"></script>
+
+<script src="<?php echo e(asset('asset/js/highchart/highcharts2.js')); ?>"></script>
+<script src="<?php echo e(asset('asset/js/highchart/highcharts-more.js')); ?>"></script>
+<script src="<?php echo e(asset('asset/js/highchart/modules/exporting.js')); ?>"></script> 
+<script src="<?php echo e(asset('asset/js/highchart/modules/offline-exporting.js')); ?>"></script> 
+
+<script>
+$('#prov').change(function(){
+	var prov = $(this).val();
+	location.href="<?php echo url(); ?>/dashboard/"+prov;
+});
+</script>
+<script>
+	Highcharts.chart('container', {
+        chart: {
+			type: 'column'
+		},
+		credits: {
+			enabled: false
+		},
+		exporting: { 
+			enabled: false 
+		},
+		title: {
+			text: ''
+		},
+		subtitle: {
+			text: ''
+		},
+		xAxis: {
+            categories: [<?php echo $dates; ?>],
+			crosshair: true
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Jumlah Kursi'
+			}
+		},
+		tooltip: {
+			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+			pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+				'<td style="padding:0"><b>{point.y:.1f} Kursi</b></td></tr>',
+			footerFormat: '</table>',
+			shared: true,
+			useHTML: true
+		},
+		plotOptions: {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0
+			}
+		}<?php echo $data_series; ?>
+	});
+</script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

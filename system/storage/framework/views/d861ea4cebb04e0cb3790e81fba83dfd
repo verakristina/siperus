@@ -1,0 +1,74 @@
+<?php $__env->startSection('content'); ?>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/jquery-3.1.1.js ')); ?>"></script>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/AhmadApp.js ')); ?>"></script>
+	<?php $__env->startSection('title-page','Data Pengurus DPD '); ?>
+
+
+	<?php $__env->startSection('modal_struk_tipe','DPD'); ?>
+	<?php $__env->startSection('struk_tipe_menu','Data Pengurus'); ?>
+	<?php $__env->startSection('struk_tipe_sub_menu','DPD'); ?>
+	<?php $__env->startSection('struk_tipe_box_header','List DPD'); ?>
+
+	<?php $__env->startSection('modal_struk_input_tambahan'); ?>
+		<?php $__env->startSection('indo_combo_prov','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+
+	<?php $__env->startSection('content_filter_combo'); ?>
+		<?php $__env->startSection('indo_combo_fprov','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_filter_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+	
+
+	<?php $__env->startSection('content_action_tambah','tambah/dpd'); ?>
+	<?php $__env->startSection('content_action_edit','edit/dpd/'); ?>
+
+	<?php $__env->startSection('goto_prov'); ?>
+		location.href="<?php echo e(url()); ?>/data_pengurus/dpd/"+provId;
+	<?php $__env->stopSection(); ?>
+	 
+	<?php $__env->startSection('content_table_header'); ?>
+		<tr>
+		  <th>No</th>
+		  <th>Jabatan</th>
+		  <th>Nama</th>
+		  <th>L/P</th>
+		  <th>No. SK</th>
+		  <th>No. KTA</th>
+		  <th>No. Telp</th>
+		  <th>Email</th>
+		  <th>Aksi</th>
+		</tr>
+	<?php $__env->stopSection(); ?>	
+
+	<?php $__env->startSection('content_table_body'); ?>
+		<?php /**/$no =1/**/ ?>
+		<?php /**/$bio_xxx_id='bio_dpd_id'/**/ ?>
+		<?php /**/$type='dpd'/**/ ?>
+		  <?php foreach($data as $val): ?>
+		   <?php /**/
+
+		  	$obj='noSk:"'.$val->no_sk2.
+		  	'",turunSK:"'.$val->turun_sk.'"'
+
+		  	/**/ ?>
+		  <?php echo $__env->make('main.input.section_generik_content', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		  <tr>
+		  <td><?php echo e($no++); ?></td>
+			<?php echo $__env->yieldContent('table_data'); ?>		
+			<?php echo $__env->yieldContent('table_action'); ?>
+		  </tr>
+		  <?php endforeach; ?>
+		  
+	<?php $__env->stopSection(); ?>
+	<script src="<?php echo e(asset('asset/js/moment.js')); ?>"></script>
+	<?php $__env->startSection('content_action_edit_func'); ?>
+		$("#no_sk").val(obj.noSk)
+		$("#date").val(moment(obj.turunSK).format('DD-MM-YYYY'))
+	<?php $__env->stopSection(); ?>
+	<?php echo $__env->make('main.input.section_content_struktur', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $__env->make('main.input.section_modal_struktur', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

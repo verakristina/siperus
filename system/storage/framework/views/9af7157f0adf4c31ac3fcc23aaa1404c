@@ -1,0 +1,512 @@
+<?php $__env->startSection('content'); ?>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/jquery-3.1.1.js ')); ?>"></script>
+
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/AhmadApp.js ')); ?>"></script>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/wNumb.js ')); ?>"></script>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/lodash.js ')); ?>"></script>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/cleave.js ')); ?>"></script>
+	<?php $__env->startSection('title-page','Data Kursi '); ?>
+
+	<?php $__env->startSection('modal_struk_tipe','Kursi'); ?>
+	<?php $__env->startSection('tipe_menu','Data Master'); ?>
+	<?php $__env->startSection('tipe_sub_menu','Kursi'); ?>
+	<?php $__env->startSection('struk_tipe_box_header','List Kursi'); ?>
+	<?php $__env->startSection('title_tipe','Kursi'); ?>
+
+	<?php $__env->startSection('modal_name','Tambah Kursi'); ?>
+	<?php $__env->startSection('modal_input'); ?>
+		<div class="form-group col-md-12" >
+			<label for="provinsi" class="col-md-3 col-sm-12 col-xs-12">Jenis Kursi</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<select name="jenis_kursi" id="jenis-kursi" onchange="checkJenisKursi('tambah',this.value)" class="form-control custom-field-litle"  >
+						<option selected disabled class="text-hide">--- Pilih Kursi ---</option>
+						<?php foreach($jenisKursi as $row): ?>
+							<option value="<?php echo e($row->jenis_kursi_id); ?>" ><?php echo e($row->jenis_kursi_value); ?></option>
+						<?php endforeach; ?>
+				</select>
+			</div>
+		</div>
+	 
+		<?php echo $__env->make('main.input.section_indo_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<div class="form-group col-md-12" style="display:none">
+			<label for="dapil" class="col-md-3 col-sm-12 col-xs-12" >Dapil</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<select name="dapil" id="dapil2" class="form-control custom-field-litle"  >
+						<option selected disabled class="text-hide">--- Pilih Dapil ---</option>
+						
+				</select>
+			</div>
+		</div> 
+		<div class="form-group col-md-12" >
+			<label for="provinsi" class="col-md-3 col-sm-12 col-xs-12">Jumlah Kursi</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<input id="jumlah-kursi" type="text" name="jumlah_kursi" class="form-control" data-bind="value:replyNumber">
+			</div>
+		</div>
+	<?php $__env->stopSection(); ?>
+
+	<?php $__env->startSection('content_filter_combo'); ?>
+		<div class="col-md-2" >
+			<select autocomplete="off" class="form-control custom-field-litle" id="kursi" name="kursi" onchange="checkJenisKursi('cari',this.value)">
+				<option value="" selected >--- Kursi ---</option>
+
+					
+				<?php foreach($jenisKursi as $row): ?>
+					<option value="<?php echo e($row->jenis_kursi_id); ?>" ><?php echo e($row->jenis_kursi_value); ?>
+
+					</option>
+				<?php endforeach; ?>
+				
+			</select>
+		</div>
+		<?php echo $__env->make('main.input.section_indo_filter_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<div class="col-md-2" style="display:none">
+			<select class="form-control custom-field-litle" id="dapil" name="dapil" >
+				<option selected disabled class="text-hide">--- Dapil ---</option>
+
+					<?php foreach($dapil as $tmp): ?>
+						<option value="<?php echo e($tmp->dapil_id); ?>"><?php echo e($tmp->dapil_nama); ?>
+
+						</option>
+					<?php endforeach; ?>
+				
+			</select>
+		</div>
+	
+	<?php $__env->stopSection(); ?>
+
+	
+
+	
+	<?php $__env->startSection('content_table_header'); ?>
+	
+	<?php $__env->stopSection(); ?>	
+
+	<?php $__env->startSection('content_table_body'); ?>
+		<?php /**/$no =1/**/ ?>
+	
+		 
+	<?php $__env->stopSection(); ?>
+	<script type="text/javascript">
+	$('table').DataTable().clear().draw();
+	<?php $__env->startSection('content_script'); ?>
+		<?php $__env->startSection('goto_prov2'); ?>
+			if(objKursi.value==2){
+				$('#dapil2').empty();
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'<?php echo e(url()); ?>/data_ajx/get/dapil/2/pro_id/'+$(this).val(),
+					success:function(res,sts,xhr){
+						var data = JSON.parse(res);
+						$('#dapil2').append('<option selected disabled class="text-hide">--- Pilih Dapil ---</option>')
+						for(obj of data){
+							
+							$('#dapil2').append('<option value="'+obj.dapil_id+'">'+obj.nama_dapil+'</option>')
+						}
+					}
+				})
+			}
+			else {
+				$('#kab2').empty();
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'<?php echo e(url()); ?>/data_ajx/get/kpu_kab/'+$(this).val(),
+					success:function(res,sts,xhr){
+						var data = JSON.parse(res);
+						$('#kab2').append('<option selected disabled class="text-hide">--- Pilih Kabupaten ---</option>')
+						for(obj of data){
+							
+							$('#kab2').append('<option value="'+obj.wilayah_id+'">'+obj.nama+'</option>')
+						}
+					}
+				})
+			}
+		<?php $__env->stopSection(); ?>
+		<?php $__env->startSection('goto_prov'); ?>
+			if(objKursi.value==2){
+				$('#dapil').empty();
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'<?php echo e(url()); ?>/data_ajx/get/dapil/2/pro_id/'+$(this).val(),
+					success:function(res,sts,xhr){
+						var data = JSON.parse(res);
+						$('#dapil').append('<option selected disabled class="text-hide">--- Pilih Dapil ---</option>')
+						for(obj of data){
+							
+							$('#dapil').append('<option value="'+obj.dapil_id+'">'+obj.nama_dapil+'</option>')
+						}
+					}
+				})
+			}
+			else {
+				$('#kab').empty();
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'<?php echo e(url()); ?>/data_ajx/get/kpu_kab/'+$(this).val(),
+					success:function(res,sts,xhr){
+						
+						var data = JSON.parse(res);
+						$('#kab').append('<option selected disabled class="text-hide">--- Pilih Kabupaten ---</option>')
+						for(obj of data){
+							
+							$('#kab').append('<option value="'+obj.wilayah_id+'">'+obj.nama+'</option>')
+						}
+					}
+				})
+			}
+		<?php $__env->stopSection(); ?>
+		<?php $__env->startSection('goto_kab2'); ?>
+			if(objKursi.value==3){
+				$('#dapil2').empty();
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'<?php echo e(url()); ?>/data_ajx/get/dapil/2/kab_id/'+$(this).val(),
+					success:function(res,sts,xhr){
+					
+						var data = JSON.parse(res);
+						$('#dapil2').append('<option selected disabled class="text-hide">--- Pilih Dapil ---</option>')
+						for(obj of data){
+							
+							$('#dapil2').append('<option value="'+obj.dapil_id+'">'+obj.nama_dapil+'</option>')
+						}
+					}
+				})
+			}
+		<?php $__env->stopSection(); ?>
+		<?php $__env->startSection('goto_kab'); ?>
+			if(objKursi.value==3){
+				$('#dapil').empty();
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'<?php echo e(url()); ?>/data_ajx/get/dapil/2/kab_id/'+$(this).val(),
+					success:function(res,sts,xhr){
+						
+						var data = JSON.parse(res);
+						$('#dapil').append('<option selected disabled class="text-hide">--- Pilih Dapil ---</option>')
+						for(obj of data){
+							
+							$('#dapil').append('<option value="'+obj.dapil_id+'">'+obj.nama_dapil+'</option>')
+						}
+					}
+				})
+			}
+		<?php $__env->stopSection(); ?>
+		<?php echo $__env->make('main.input.section_script_wilayah_kosong', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+	
+	<?php $__env->startSection('content_action_edit_func'); ?>
+		jQuery("#modal-input-generik").modal('show');
+		console.log(obj)
+		jQuery("#jumlah-kursi").val(obj.jumlah_kursi)
+		jQuery("#jenis-kursi").val(obj.jenis_kursi.jenis_kursi_id)
+		jQuery('#form-input-generik').attr('action',"<?php echo e(url()); ?>/master/edit_kursi/"+obj.kursi_id);
+	<?php $__env->stopSection(); ?>
+	<?php $__env->startSection('content_action_add_func'); ?>
+		jQuery("#modal-input-generik").modal('show');
+		console.log(jQuery("#modal-input-generik"))
+		jQuery('#form-input-generik').attr('action',"<?php echo e(url()); ?>/master/tambah_kursi");
+	<?php $__env->stopSection(); ?>
+	</script>
+
+	<?php echo $__env->make('main.input.section_content_generik2', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $__env->make('main.input.section_modal_generik', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<script type="text/template" id="table-action">
+		<div onclick="detailUser('****unimplement***')" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"><i class="fa fa-search"></i></div>
+
+
+		<div onclick='actionEdit(<%= JSON.stringify(row) %>)' class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit">
+			<i class="fa fa-edit"></i>
+		</div>
+		<a href="<?php echo e(url().'/master/hapus_kursi/'); ?><%= row.kursi_id %>'" onclick="return confirm('Apakah anda yakin ingin menhapus data ini?');" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete">
+			<i class="fa fa-trash">
+
+			</i>
+		</a>
+		<div onclick="printUser('')" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="fa fa-print"></i></div>
+	</script>
+<script type="text/template">
+	/*<tr>
+		  <th>No</th>
+		  <!--th>Provinsi</th-->
+		  <th>Jenis Kursi</th>
+		  <th>Jumlah Kursi</th>
+	
+		  <th width="150">Aksi</th>
+		</tr>
+		 <?php foreach($data as $val): ?>
+
+		  
+		  		<td><?php echo e($no++); ?></td>
+		  		<!--td><?php echo e($val->geo_prov_nama); ?></td-->
+				<td><?php echo e(strtoupper($val->jenisKursi ['jenis_kursi_value'])?:'-'); ?></td>
+				<td><?php echo e(@number_format($val->jumlah_kursi,null,null,'.')?:'-'); ?></td>
+			<td >			
+
+			<div onclick="detailUser('<?php echo e(@$tmp->struk_pac_id); ?>')" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"><i class="fa fa-search"></i></div>
+								
+								
+				<div onclick="actionEdit(<?php echo e(json_encode($val)); ?>)" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit">
+					<i class="fa fa-edit"></i>
+				</div>
+				<a href="<?php echo e(url().'/master/hapus_kursi/'.$val->kursi_id); ?>" onclick="return confirm('Apakah anda yakin ingin menhapus data ini?');" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete">
+					<i class="fa fa-trash">
+
+					</i>
+				</a>
+			  <div onclick="printUser('<?php echo e(@$tmp->struk_pac_id); ?>')" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="fa fa-print"></i></div>
+			</td>
+		  </tr>
+		  <?php endforeach; ?>*/
+</script>
+	<script type="text/javascript">
+
+		new Cleave('#jumlah-kursi', {
+		    numeral: true,
+		    numeralThousandsGroupStyle: 'thousand'
+		});
+
+		var modeTable={dapil:false,jenisKursi1:false,jenisKursi2:false,jenisKursi3:false}
+
+		$('#dapil').on('change',function(){
+			loadTable('/data_ajx/get/data_kursi/'+$(this).val(),'dapil',
+				['No','Jumlah Kursi','Action'],
+				[{data:'kursi_id'},{data:"jumlah_kursi"},{data:'kursi_id'}])
+			
+		})
+
+		var objKursi={};
+
+		function checkJenisKursi(jenis,value){
+			var th=['No','Nama','Jumlah Kursi','Action']
+			var column=[{data:'kursi_id'},{data:"jenis_kursi.jenis_kursi_value"},{data:"jumlah_kursi"},{data:'kursi_id'}]
+			var jenisKursi='jenisKursi';
+			objKursi.value=value;
+			if(jenis == 'tambah'){
+				var dapil = '#dapil2';
+				var prov = '#prov2';
+				var kab = '#kab2';
+				var parProv = $($(prov).parent('div')).parent('div');
+				var parKab = $($(kab).parent('div')).parent('div')
+				var parDpl = $($(dapil).parent('div')).parent('div')
+
+			} else if(jenis == 'cari'){
+				var dapil = '#dapil';
+				var prov = '#prov';
+				var kab = '#kab';
+				var parProv = $(prov).parent('div');
+				var parKab = $(kab).parent('div');
+				var parDpl = $(dapil).parent('div');
+			}
+			console.log(value)
+			if(value===""){
+				$(parProv).hide();
+				$(parKab).hide();
+				$(parDpl).hide();
+				return
+			}
+			if(value == 1){
+				$('#test-header').empty()
+
+				$(dapil).empty();
+				/*$.getJSON('http://dapil.kpu.go.id/api.php?cmd=browse&tingkat_dapil=1&jsoncallback=jsonCallback',
+					
+					function(res){
+						console.log(res)
+						var data = JSON.parse(res);
+						$(dapil).append('<option selected disabled class="text-hide">--- Pilih Dapil ---</option>')
+						for(obj of data){
+							console.log(obj.dapil_id)
+							$(dapil).append('<option value="'+obj.dapil_id+'">"'+obj.nama_dapil+'"</option>')
+						}
+				});*/
+				
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'<?php echo e(url()); ?>/data_ajx/get/dapil/1',
+					success:function(res,sts,xhr){
+						console.log(res)
+						var data = JSON.parse(res);
+						$(dapil).append('<option selected disabled class="text-hide">--- Pilih Dapil ---</option>')
+						for(obj of data){
+							console.log(obj.dapil_id)
+							$(dapil).append('<option value="'+obj.dapil_id+'">'+obj.nama_dapil+'</option>')
+							$(parDpl).show();
+							$(parProv).hide();
+							$(parKab).hide();
+							
+						}
+					}
+				})
+				th=['No','Nama','Nama Dapil','Jumlah Kursi','Action']
+				column=[{data:'kursi_id'},{data:"jenis_kursi.jenis_kursi_value"},{data:"dapil.dapil_nama"},{data:"jumlah_kursi"},{data:'kursi_id'}]
+				jenisKursi = "jenisKusri1"
+				//$($(dapil).parent('div')).parent('div').show();
+			} else if(value == 2){
+				$(dapil).empty();
+				$(prov).empty();
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'<?php echo e(url()); ?>/data_ajx/get/kpu_prov',
+					success:function(res,sts,xhr){
+						console.log(res)
+						var data = JSON.parse(res);
+						$(prov).append('<option selected disabled class="text-hide">--- Pilih Provinsi ---</option>')
+						for(obj of data){
+							console.log(obj.dapil_id)
+							$(prov).append('<option value="'+obj.wilayah_id+'">'+obj.nama+'</option>')
+						}
+						$(parProv).show();
+						$(parKab).hide();
+						$(parDpl).show();
+						
+					}
+				})
+				th=['No','Provinsi','Nama','Nama Dapil','Jumlah Kursi','Action']
+				column=[{data:'kursi_id'},{data:"jenis_kursi.jenis_kursi_value"},{data:"jumlah_kursi"}]
+				jenisKursi = "jenisKusri2"
+				//$($(dapil).parent('div')).parent('div').hide();
+			} else if(value == 3){
+				$(dapil).empty();
+				$(prov).empty();
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'<?php echo e(url()); ?>/data_ajx/get/kpu_prov',
+					success:function(res,sts,xhr){
+						console.log(res)
+						var data = JSON.parse(res);
+						$(prov).append('<option selected disabled class="text-hide">--- Pilih Provinsi ---</option>')
+						for(obj of data){
+							console.log(obj.dapil_id)
+							$(prov).append('<option value="'+obj.wilayah_id+'">'+obj.nama+'</option>')
+						}
+						$(parProv).show();
+						$(parKab).show();
+						$(parDpl).show();
+					}
+				})
+				th=['No','Provinsi','Kabupaten','Nama Dapil','Jumlah Kursi','Action']
+				column=[{data:'kursi_id'},{data:"geo_prov_id"},{data:"geo_kab_id"},{data:"dapil.dapil_nama"},{data:"jumlah_kursi"},{data:'kursi_id'}]
+				jenisKursi = "jenisKusri3"
+				//$($(dapil).parent('div')).parent('div').hide();
+			}
+			loadTable('/data_ajx/get/data_kursi/by_tingkat/'+value,jenisKursi,th,column)
+		 
+		}
+
+		function loadTable(url,model,th,column){
+
+			allTable.clear()
+			
+			if(!modeTable[model]){
+				$.ajax({
+				type:'GET',
+				contentType: "application/json",
+				url:'<?php echo e(url()); ?>'+url,
+				success:function(res,sts,xhr){
+					console.log(res)
+					var data = JSON.parse(res);
+					allTable.clear()
+					allTable.destroy();
+					$('#test-header').empty()
+					var tr=$('<tr>')
+					if(th){
+						for(var o of th){
+							console.log(o)
+							tr.append('<th>'+o+'</th>')
+						}
+					}
+					$('#test-header').append(tr)
+					allTable=$('table').DataTable({
+						responsive:true,
+						columns:column,
+						data:data.data,
+						columnDefs: [{
+
+					        targets: 0,
+					        data: null,
+					        defaultContent: "",
+					        width:'30px',
+					        render: function ( data, type, row, meta ) {
+					                return meta.row + meta.settings._iDisplayStart + 1;
+					        }
+					      	},{
+					        targets:[-1],
+					        data: null,
+					        width:"170px",
+					        defaultContent: "",
+					        render: function ( data, type, row, meta ) {
+					            var tpl=_.template($("#table-action").html());
+					            var compiled=tpl({'data':data,'row':row,'meta':meta,'type':type})
+					            return compiled;
+					        }
+					    }]
+					})
+					//allTable.rows.add( data[0]).draw();
+				
+				}
+			})
+			}
+			else{
+				try{
+					allTable.ajax.url('<?php echo e(url()); ?>'+url).load()
+				}catch(err){
+					console.log(err.message)
+				}
+			}
+			_.forOwn(modeTable,function(k,v){modeTable[k]=false})
+			modeTable[model] =true;
+		}
+	$(function(){
+		});
+	
+	
+	
+	console.log(<?php echo $data; ?>)
+	allTable=$('.table').DataTable({
+		responsive:true,
+		columns:[{name:'test',title:"Id Kursi",data:'kursi_id'},{name:'test',title:"Prov",data:'geo_prov_id'},{name:'test',title:"Kab",data:'geo_kab_id'},{name:'test',title:"Jenis Kursi",data:"jenis_kursi.jenis_kursi_value"},{name:'test',title:"Dapil",data:"dapil.dapil_nama"},{name:'test',title:"Jumlah Kursi",data:"jumlah_kursi"},{name:'test',title:"Action",data:"kursi_id"}],
+		data:<?php echo $data; ?>,
+		columnDefs: [{
+	        targets: 0,
+	        data: null,
+	        defaultContent: "",
+	        width:'30px',
+	        render: function ( data, type, row, meta ) {
+	                return meta.row + meta.settings._iDisplayStart + 1;
+	        }
+	      	},
+	      	{
+	        targets: 'test',
+	        data: null,
+	        defaultContent: "",
+	        width:'30px',
+	        render: function ( data, type, row, meta ) {
+	                return 1;
+	        }
+	      	},{
+	        targets:[-1],
+	        data: null,
+	        width:"170px",
+	        defaultContent: "",
+	        render: function ( data, type, row, meta ) {
+	            var tpl=_.template($("#table-action").html());
+	            var compiled=tpl({'data':data,'row':row,'meta':meta,'type':type})
+	            return compiled;
+	        }
+	    }]
+		
+	})
+	</script>
+<?php $__env->stopSection(); ?>
+
+
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

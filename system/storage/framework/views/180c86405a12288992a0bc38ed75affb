@@ -1,0 +1,101 @@
+<?php $__env->startSection('content'); ?>
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/jquery-3.1.1.js ')); ?>"></script>
+
+	<script type="text/javascript" src="<?php echo e(asset('asset/js/AhmadApp.js ')); ?>"></script>
+	<?php $__env->startSection('title-page','Data Kursi '); ?>
+
+	<?php $__env->startSection('modal_struk_tipe','Kursi'); ?>
+	<?php $__env->startSection('tipe_menu','Data Master'); ?>
+	<?php $__env->startSection('tipe_sub_menu','Kursi'); ?>
+	<?php $__env->startSection('struk_tipe_box_header','List Kursi'); ?>
+	<?php $__env->startSection('title_tipe','Kursi'); ?>
+
+	<?php $__env->startSection('modal_input'); ?>
+		<?php $__env->startSection('indo_combo_prov','initial'); ?>
+		<?php $__env->startSection('indo_combo_kab','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<div class="form-group col-md-12" >
+			<label for="provinsi" class="col-md-3 col-sm-12 col-xs-12">Jenis Kursi</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<select name="jenis_kursi" id="jenis-kursi" class="form-control custom-field-litle"  >
+						<option selected disabled class="text-hide">--- Pilih Kursi ---</option>
+						<?php foreach($jenisKursi as $row): ?>
+							<option value="<?php echo e($row->jenis_kursi_id); ?>" ><?php echo e($row->jenis_kursi_value); ?></option>
+						<?php endforeach; ?>
+				</select>
+			</div>
+		</div>
+		<div class="form-group col-md-12" >
+			<label for="provinsi" class="col-md-3 col-sm-12 col-xs-12">Jumlah Kursi</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<input id="jumlah-kursi" type="text" name="jumlah_kursi" class="form-control" data-bind="value:replyNumber">
+			</div>
+		</div>
+	<?php $__env->stopSection(); ?>
+
+	<?php $__env->startSection('content_filter_combo'); ?>
+		<?php $__env->startSection('indo_combo_fprov','initial'); ?>
+		<?php $__env->startSection('indo_combo_fkab','initial'); ?>
+		<?php echo $__env->make('main.input.section_indo_filter_combo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php $__env->stopSection(); ?>
+
+	
+
+	<?php $__env->startSection('content_action_tambah','master/tambah_kursi'); ?>
+	<?php $__env->startSection('content_action_edit','master/edit_kursi'); ?>
+
+	<?php $__env->startSection('goto_kab'); ?>
+	location.href="<?php echo e(url()); ?>/master/kursi/"+provId+"/"+kabId;
+	<?php $__env->stopSection(); ?>
+
+	<?php $__env->startSection('content_table_header'); ?>
+		<tr>
+		  <th>No</th>
+		  <th>Jenis Kursi</th>
+		  <th>Jumlah Kursi</th>
+		  <th width="150">Aksi</th>
+		</tr>
+	<?php $__env->stopSection(); ?>	
+
+	<?php $__env->startSection('content_table_body'); ?>
+		<?php /**/$no =1/**/ ?>
+	
+		  <?php foreach($data as $val): ?>
+
+		  <tr>
+		  		<td><?php echo e($no++); ?></td>
+				<td><?php echo e(ucwords(strtolower($val->jenisKursi ['jenis_kursi_value']))?:'-'); ?></td>
+				<td><?php echo e(ucwords(strtolower(isset($val->jumlah_kursi)?$val->jumlah_kursi:'-'))?:'-'); ?></td>
+			<td>			
+
+				<div onclick="actionEdit(<?php echo e(json_encode($val)); ?>)" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit">
+					<i class="fa fa-edit"></i>
+				</div>
+				<a href="<?php echo e(url().'/master/hapus_kursi/'.$val->kursi_id); ?>" onclick="return confirm('Apakah anda yakin ingin menhapus data ini?');" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete">
+					<i class="fa fa-trash">
+
+					</i>
+				</a>
+			</td>
+		  </tr>
+		  <?php endforeach; ?>
+	<?php $__env->stopSection(); ?>
+	<?php $__env->startSection('content_action_edit_func'); ?>
+		jQuery("#modal-input-generik").modal('show');
+		console.log(obj)
+
+		jQuery("#jumlah-kursi").val(obj.jumlah_kursi)
+		jQuery("#jenis-kursi").val(obj.jenis_kursi_id)
+		jQuery('#form-input-generik').attr('action',"<?php echo e(url()); ?>/master/edit_kursi/"+obj.kursi_id);
+	<?php $__env->stopSection(); ?>
+	<?php $__env->startSection('content_action_add_func'); ?>
+		jQuery("#modal-input-generik").modal('show');
+		console.log(jQuery("#modal-input-generik"))
+		jQuery('#form-input-generik').attr('action',"<?php echo e(url()); ?>/master/tambah_kursi");
+	<?php $__env->stopSection(); ?>
+	<?php echo $__env->make('main.input.section_content_generik', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $__env->make('main.input.section_modal_generik', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('main.layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

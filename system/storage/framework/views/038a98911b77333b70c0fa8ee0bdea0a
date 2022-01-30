@@ -1,0 +1,43 @@
+<?php $__env->startSection('table_action'); ?>	
+<td style="width:1%;white-space:nowrap;">
+	<div onclick="getDataDetailVerif('<?php echo e(@$val->verifikasi_id); ?>')" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Detail"><i class="fa fa-search"></i></div>
+	<div onclick="actionEdit(<?php echo e($val->verifikasi_id); ?>,'<?php echo e($val->verifikasi_staf_admin); ?>',<?php echo e('{'.(@$obj?:'').'}'); ?>)" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit"><i class="fa fa-edit"></i></div>
+	<a href="<?php echo e(asset('input/hapus/verifikasi/'.$val->verifikasi_id)); ?>" onclick="return confirm('Apakah anda yakin ingin menhapus data ini?');" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+	<div onclick="printUser('<?php echo e(@$val->verifikasi_id); ?>')" class="hide btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="fa fa-print"></i></div>
+	<div onclick="getExcel('<?php echo e(@$val->verifikasi_id); ?>')" class="hide btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Excel"><i class="fa fa-file"></i></div>
+</td>
+<?php $__env->stopSection(true); ?>
+<?php $__env->startSection('table_data'); ?>
+<style type="text/css">
+	.fa.fa-check {
+		color: green !important;
+	}	
+	.fa.fa-times {
+		color: red !important;
+	}
+</style>
+		<td><?php echo e($val->verifikasi_nama?:'-'); ?></td>
+		<td>
+			<?php if($val->verifikasi_status_kantor == '1'): ?>
+				Milik Sendiri
+			<?php elseif($val->verifikasi_status_kantor == NULL): ?>
+				-
+			<?php elseif($val->verifikasi_status_kantor == '2'): ?>
+				Kontrak / Pinjam Pakai
+			<?php endif; ?>
+		</td>
+		<td><?php echo e($val->verifikasi_alamat_kantor?:'-'); ?></td>
+		<td><?php echo e($val->verifikasi_ibukota?:'-'); ?></td>
+		<td><?php if($val->verifikasi_keaktifan_pengurus == 1): ?> <i class="fa fa-check" aria-hidden="true"></i> <?php else: ?> <i class="fa fa-times" aria-hidden="true"></i> <?php endif; ?></td>
+		<td><?php if($val->verifikasi_perempuan == 1): ?> <i class="fa fa-check" aria-hidden="true"></i> <?php else: ?> <i class="fa fa-times" aria-hidden="true"></i> <?php endif; ?></td>
+		<td><?php echo e($val->verifikasi_jumlah_kta?:'0'); ?></td>
+		<td><?php if($val->verifikasi_ruang_kerja_k == 1): ?> <i class="fa fa-check" aria-hidden="true"></i> <?php else: ?> <i class="fa fa-times" aria-hidden="true"></i> <?php endif; ?></td>
+		<td><?php if($val->verifikasi_ruang_kerja_s == 1): ?> <i class="fa fa-check" aria-hidden="true"></i> <?php else: ?> <i class="fa fa-times" aria-hidden="true"></i> <?php endif; ?></td>
+		<td><?php if($val->verifikasi_ruang_kerja_b == 1): ?> <i class="fa fa-check" aria-hidden="true"></i> <?php else: ?> <i class="fa fa-times" aria-hidden="true"></i> <?php endif; ?></td>
+		<td><?php if($val->verifikasi_staf_admin == 1): ?> <i class="fa fa-check" aria-hidden="true"></i> <?php else: ?> <i class="fa fa-times" aria-hidden="true"></i> <?php endif; ?></td>
+		<td><?php if($val->verifikasi_papan_nama == 1): ?> <i class="fa fa-check" aria-hidden="true"></i> <?php else: ?> <i class="fa fa-times" aria-hidden="true"></i> <?php endif; ?></td>
+		<td><?php if($val->verifikasi_preswapres == 1): ?> <i class="fa fa-check" aria-hidden="true"></i> <?php else: ?> <i class="fa fa-times" aria-hidden="true"></i> <?php endif; ?></td>
+		<td><?php if($val->verifikasi_garuda == 1): ?> <i class="fa fa-check" aria-hidden="true"></i> <?php else: ?> <i class="fa fa-times" aria-hidden="true"></i> <?php endif; ?></td>
+		<td><?php if($val->verifikasi_ketum_sekjen == 1): ?> <i class="fa fa-check" aria-hidden="true"></i> <?php else: ?> <i class="fa fa-times" aria-hidden="true"></i> <?php endif; ?></td>
+		<td><?php echo e($val->verifikasi_nomer_rekening?:'-'); ?></td>
+<?php $__env->stopSection(true); ?>

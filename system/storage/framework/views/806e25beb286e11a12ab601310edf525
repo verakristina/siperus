@@ -1,0 +1,64 @@
+ 
+<div class="form-group col-md-12" style="display:<?php echo $__env->yieldContent('indo_combo_prov','none'); ?>">
+	<label for="provinsi" class="col-md-3 col-sm-12 col-xs-12">Provinsi</label>
+	<div class="col-md-9 col-sm-12 col-xs-12">
+		<select name="provinsi" id="prov2" class="form-control custom-field-litle"  >
+				<option selected disabled class="text-hide">--- Pilih Provinsi ---</option>
+				<?php foreach($provinsi as $tmp): ?>
+					<option value="<?php echo e($tmp->geo_prov_id); ?>" <?php if($tmp->geo_prov_id==$selected[0]): ?> selected <?php endif; ?>><?php echo e($tmp->geo_prov_nama); ?></option>
+				<?php endforeach; ?>
+		</select>
+	</div>
+</div>
+<div class="form-group col-md-12" style="display:<?php echo $__env->yieldContent('indo_combo_kab','none'); ?>">
+	<label for="kabupaten" class="col-md-3 col-sm-12 col-xs-12">Kabupaten</label>
+	<div class="col-md-9 col-sm-12 col-xs-12">
+	<select name="kabupaten" id="kab2" class="form-control custom-field-litle" >
+			<option selected  disabled class="text-hide">--- Kabupaten ---</option>
+			<?php if($selected[1]): ?>
+				<?php foreach($kabupaten as $tmp): ?>
+					<option value="<?php echo e($tmp->geo_kab_id); ?>" <?php if($tmp->geo_kab_id==$selected[1]): ?> selected <?php endif; ?>><?php echo e($tmp->geo_kab_nama); ?></option>
+				<?php endforeach; ?>
+			<?php endif; ?>
+	</select>
+	</div>
+</div>
+<div class="form-group col-md-12" style="display:<?php echo $__env->yieldContent('indo_combo_kec','none'); ?>">
+	<label for="kecamatan" class="col-md-3 col-sm-12 col-xs-12">Kecamatan</label>
+	<div class="col-md-9 col-sm-12 col-xs-12">
+	<select name="kecamatan" id="kec2" class="form-control custom-field-litle" >
+			<option selected disabled class="text-hide">--- Kecamatan ---</option>
+			<?php if($selected[2]): ?>
+				<?php foreach($kecamatan as $tmp): ?>
+					<option value="<?php echo e($tmp->geo_kec_id); ?>" <?php if($tmp->geo_kec_id==$selected[2]): ?> selected <?php endif; ?>><?php echo e($tmp->geo_kec_nama); ?></option>
+				<?php endforeach; ?>
+			<?php endif; ?>
+	</select>
+	</div>
+</div>
+<div class="form-group col-md-12" style="display:<?php echo $__env->yieldContent('indo_combo_kel','none'); ?>">
+	<label for="desakelurahan" class="col-md-3 col-sm-12 col-xs-12">Desa/Kelurahan</label>
+	<div class="col-md-9 col-sm-12 col-xs-12">
+	<select name="desakelurahan" id="kel2" class="form-control custom-field-litle" >
+			<option selected disabled class="text-hide">--- desa/kelurahan ---</option>
+			<?php if($selected[3]): ?>
+				<?php foreach($kelurahan as $tmp): ?>
+					<option value="<?php echo e($tmp->geo_deskel_id); ?>" <?php if($tmp->geo_deskel_id==$selected[3]): ?> selected <?php endif; ?>><?php echo e($tmp->geo_deskel_nama); ?></option>
+				<?php endforeach; ?>
+			<?php endif; ?>
+	</select>
+	</div>
+</div>
+<div class="form-group col-md-12" style="display:<?php echo $__env->yieldContent('indo_combo_rw','none'); ?>">
+	<label for="rukunwarga" class="col-md-3 col-sm-12 col-xs-12 col-sm-12 col-xs-12">Rukun Warga</label>
+	<div class="col-md-9 col-sm-12 col-xs-12">
+	<select name="rukunwarga" id="kel2" class="form-control custom-field-litle" >
+			<option selected disabled class="text-hide">--- rw ---</option>
+			<?php if($selected[4]): ?>
+				<?php foreach($rukunwarga as $tmp): ?>
+					<option value="<?php echo e($tmp->geo_rw_id); ?>" <?php if($tmp->geo_rw_id==$selected[4]): ?> selected <?php endif; ?>><?php echo e($tmp->geo_rw_nama); ?></option>
+				<?php endforeach; ?>
+			<?php endif; ?>
+	</select>
+	</div>
+</div>

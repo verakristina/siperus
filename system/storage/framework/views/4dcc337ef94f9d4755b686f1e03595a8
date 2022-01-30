@@ -1,0 +1,18 @@
+<?php $__env->startSection('title','Registration'); ?>
+<?php $__env->startSection('title-page','Registration'); ?>
+
+<?php $__env->startSection('content'); ?>
+
+	<div class="content">
+		<center>
+		<h1>REGISTRASI</h1>
+		<h2>REGISTRATION</h2>
+		<p>Registrasi Dengan / <em>Registration With :</em></p>
+			<a href="<?php echo e(asset('register/facebook/login')); ?>"><div class="btn btn-primary default facebook">Facebook</div></a>
+			<a href="<?php echo e(asset('register/google/login')); ?>"><div class="btn btn-default default email">Email</div></a>
+			<a href="<?php echo e(asset('register/guest/login')); ?>"><div class="btn btn-default default email">Quest</div></a>
+		</center>
+	</div> 
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

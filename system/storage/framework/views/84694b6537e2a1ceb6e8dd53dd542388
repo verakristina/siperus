@@ -1,0 +1,65 @@
+<style>
+	.center{
+		text-align: center;
+	}
+</style>
+<table>
+	<tr>
+		<td colspan="6">
+			<h3>Data Pengurus <?php echo e(strtoupper($type)); ?> Partai HANURA</h3>
+		</td>
+	</tr>
+	<?php if($g_prov != ""): ?>
+	<tr>
+		<td>
+			<h4><?php echo e("Provinsi"); ?></h4>
+		</td>
+		<td><?php echo e($g_prov); ?></td>
+	</tr>
+	<?php endif; ?>
+	<?php if($g_kab != ""): ?>
+	<tr>
+		<td>
+			<h4><?php echo e("Kota/Kabupaten"); ?></h4>
+		</td>
+		<td><?php echo e($g_kab); ?></td>
+	</tr>
+	<?php endif; ?>
+	<?php if($g_kec != ""): ?>
+	<tr>
+		<td>
+			<h4><?php echo e("Kecamatan"); ?></h4>
+		</td>
+		<td><?php echo e($g_kec); ?></td>
+	</tr>
+	<?php endif; ?>
+	<?php if($g_deskel != ""): ?>
+	<tr>
+		<td>
+			<h4><?php echo e("Kelurahan"); ?></h4>
+		</td>
+		<td><?php echo e($g_deskel); ?></td>
+	</tr>
+	<?php endif; ?>
+</table>
+<table class="table table-bordered">
+	<tr>
+		<th class="center">Nama</th>
+		<th class="center">Jabatan</th>
+		<!-- <th class="center">Daerah</th> -->
+		<th class="center">No. SK</th>
+		<th class="center">No. KTA</th>
+		<th class="center">No. KTP</th>
+	</tr>
+	<?php $no = 1 ?>
+	<?php foreach($dataReport as $val): ?>
+	<tr>
+		<td><?php echo e($val->nama?:'-'); ?></td>
+		<td><?php echo e(ucwords(strtolower(isset($val->nama_jabatan)?$val->nama_jabatan:'-'))?:'-'); ?></td>
+		<!-- <td><?php echo e(($val->gender==1?'L':($val->gender==2?'P':'-'))); ?></td> -->
+		<td class="center"><?php echo e($val->no_sk2?:'-'); ?></td>
+		<td class="center"><?php echo e($val->no_kta2?"'".str_replace('.', '', $val->no_kta2):'-'); ?></td>
+		<td class="center"><?php echo e($val->bio_nomer_identitas?"'".$val->bio_nomer_identitas:'-'); ?></td>
+	</tr>
+	<?php endforeach; ?>
+</table>
